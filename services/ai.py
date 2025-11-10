@@ -4,18 +4,32 @@ import streamlit as st
 from google import genai
 from google.genai import types
 
-@st.cache_resource
+def _safe_secrets() -> dict:
+    """Return secrets as a plain dict, or {} if secrets.toml is malformed."""
+    try:
+        # Accessing st.secrets triggers TOML parsing; wrap it.
+        return dict(st.secrets)
+    except Exception as e:
+        # Don't crash the UI if the TOML is bad.
+        print(f"[secrets] Could not parse .streamlit/secrets.toml: {e}")
+        return {}
+
+def _resolve_api_key() -> str | None:
+    # 1) Prefer environment variable (avoids TOML parse entirely)
+    key = os.getenv("GEMINI_API_KEY")
+    if key:
+        return key
+
+    # 2) Try Streamlit secrets safely
+    s = _safe_secrets()
+    return s.get("GEMINI_API_KEY") or (s.get("google") or {}).get("api_key")
+
 def get_client():
-    # Accept several shapes: top-level, [google] section, or env var
-    key = (
-        st.secrets.get("GEMINI_API_KEY")
-        or (st.secrets.get("google", {}) or {}).get("api_key")
-        or os.getenv("GEMINI_API_KEY")
-    )
+    key = _resolve_api_key()
     if not key:
         raise RuntimeError(
-            "Gemini API key not found. Add GEMINI_API_KEY to secrets or use:\n"
-            'GEMINI_API_KEY = "AIzaSy..."  (quotes required)'
+            "Gemini API key not found. Set an env var GEMINI_API_KEY, or fix "
+            'Streamlit secrets. Example:\nGEMINI_API_KEY = "AIzaSy...."  (quotes required)'
         )
     return genai.Client(api_key=key)
 
