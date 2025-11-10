@@ -88,22 +88,18 @@ def main():
                     text = getattr(resp, "text", None) or "I’m here to help."
                 except Exception as e:
                     text = f"Model error: {e}"
-try:
-    resp = chat_once(parts)
-    text = getattr(resp, "text", None) or "I’m here to help."
-except Exception as e:
-    text = f"Model error: {e}"
-
-
-
-
-            
             else:
                 # echo fallback
                 text = "AI is not configured right now. Echo: " + user_text
 
             state.messages.append({"role": "assistant", "content": text})
             st.rerun()
+
+try:
+    resp = chat_once(parts)
+    text = getattr(resp, "text", None) or "I’m here to help."
+except Exception as e:
+    text = f"Model error: {e}"
 
 if __name__ == "__main__":
     main()
