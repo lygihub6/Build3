@@ -33,8 +33,9 @@ def main():
     state = get_state(st)
     inject_css()
 
-    # --- Layout with adjusted ratios for full screen usage ------------
-    left, main = st.columns([1, 3], gap="large")  # Changed from [1, 2] to [1, 3]
+    # --- Layout with maximum space for content ------------
+    # Changed to [1, 4.5] ratio: sidebar ~18%, main content ~82%
+    left, main = st.columns([1, 4.5], gap="large")
 
     # Left: simple nav using whatever steps loaded successfully
     with left:
