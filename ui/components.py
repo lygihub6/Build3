@@ -4,24 +4,44 @@ import streamlit as st
 def inject_css():
     st.markdown(
         """<style>
-        /* Remove default Streamlit padding and maximize width */
+        /* AGGRESSIVE: Remove ALL Streamlit width constraints */
         .main .block-container {
-            padding-top: 2rem;
-            padding-bottom: 0rem;
-            padding-left: 2rem;
-            padding-right: 2rem;
-            max-width: 100%;
+            padding-top: 1.5rem !important;
+            padding-bottom: 0rem !important;
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+            max-width: 100% !important;
+            width: 100% !important;
         }
         
-        /* Make content fill available width */
+        /* Override any Streamlit max-width settings */
+        .stApp {
+            max-width: 100% !important;
+        }
+        
+        /* Make ALL content fill available width */
         [data-testid="stHorizontalBlock"] {
-            width: 100%;
-            gap: 2rem;
+            width: 100% !important;
+            max-width: 100% !important;
+            gap: 2rem !important;
         }
         
-        /* Ensure columns use full width */
+        /* Ensure ALL columns use full width */
         [data-testid="column"] {
-            width: 100%;
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Make vertical blocks full width */
+        [data-testid="stVerticalBlock"] {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Expand all containers */
+        .element-container {
+            width: 100% !important;
+            max-width: 100% !important;
         }
         
         /* Add spacing between radio button items */
@@ -92,11 +112,13 @@ def inject_css():
         /* Make chat container full width */
         .stChatFloatingInputContainer {
             width: 100% !important;
+            max-width: 100% !important;
         }
         
         /* Ensure container expands to full width */
         [data-testid="stVerticalBlock"] > div:has(.stChatFloatingInputContainer) {
-            width: 100%;
+            width: 100% !important;
+            max-width: 100% !important;
         }
         
         /* Compact chat message styling */
@@ -131,14 +153,47 @@ def inject_css():
             transform: translateY(-1px);
         }
         
-        /* Make number inputs and time inputs full width */
-        .stNumberInput, .stTimeInput, .stDateInput {
-            width: 100%;
+        /* Make ALL form inputs use more width */
+        .stNumberInput, .stTimeInput, .stDateInput, .stTextInput, .stTextArea {
+            width: 100% !important;
+            max-width: 100% !important;
         }
         
-        /* Ensure form elements are responsive */
-        .stNumberInput > div, .stTimeInput > div, .stDateInput > div {
-            width: 100%;
+        /* Ensure form elements containers are full width */
+        .stNumberInput > div, 
+        .stTimeInput > div, 
+        .stDateInput > div,
+        .stTextInput > div,
+        .stTextArea > div {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Make input fields themselves wider */
+        .stNumberInput input,
+        .stTimeInput input,
+        .stDateInput input,
+        .stTextInput input,
+        .stTextArea textarea {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Ensure nested columns (like in time_plan) use full width */
+        [data-testid="column"] [data-testid="stHorizontalBlock"] {
+            width: 100% !important;
+            max-width: 100% !important;
+        }
+        
+        /* Make column gaps consistent */
+        [data-testid="stHorizontalBlock"] {
+            column-gap: 2rem !important;
+        }
+        
+        /* Remove any max-width constraints from Streamlit */
+        div[data-testid="column"] > div {
+            width: 100% !important;
+            max-width: 100% !important;
         }
         </style>""",
         unsafe_allow_html=True,
