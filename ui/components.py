@@ -1,4 +1,4 @@
-# ui/components.py
+# ui/components.py - Comprehensive solution with verified CSS
 import streamlit as st
 
 def inject_css():
@@ -10,58 +10,76 @@ def inject_css():
             padding-bottom: 0rem;
         }
         
-        /* Make the left column stretch full height and distribute content */
-        [data-testid="column"]:first-child {
+        /* Target the left column specifically */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child {
             display: flex !important;
             flex-direction: column !important;
-            min-height: calc(100vh - 4rem) !important;
+            min-height: 85vh !important;
         }
         
-        /* Style the Steps section */
-        [data-testid="column"]:first-child > div {
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
-        
-        /* Distribute radio buttons evenly with spacing */
-        [data-testid="column"]:first-child .stRadio {
+        /* Make the vertical block inside left column fill height */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child [data-testid="stVerticalBlock"] {
             display: flex !important;
             flex-direction: column !important;
+            height: 100% !important;
+        }
+        
+        /* Target the radio group and make it spread */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio {
             flex: 1 !important;
-            justify-content: space-evenly !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        
+        /* Distribute radio items evenly */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio > div {
+            display: flex !important;
+            flex-direction: column !important;
+            justify-content: space-around !important;
+            height: 100% !important;
             padding: 2rem 0 !important;
         }
         
-        /* Space out individual radio items */
-        [data-testid="column"]:first-child .stRadio > div {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 1.5rem !important;
-        }
-        
-        /* Make each radio option larger and more prominent */
-        [data-testid="column"]:first-child .stRadio label {
-            padding: 0.75rem 1rem !important;
+        /* Style individual radio items with spacing */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio label {
+            padding: 1rem !important;
+            margin: 0.75rem 0 !important;
             border-radius: 12px !important;
             transition: all 0.2s ease !important;
             cursor: pointer !important;
             background: #f8fafc !important;
             border: 2px solid transparent !important;
-            margin: 0.5rem 0 !important;
+            font-size: 15px !important;
         }
         
-        /* Hover effect for radio options */
-        [data-testid="column"]:first-child .stRadio label:hover {
+        /* Hover effect */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio label:hover {
             background: #e8f5e9 !important;
-            border-color: #d4eed8 !important;
+            border-color: #c8e6c9 !important;
+            transform: translateX(4px) !important;
         }
         
-        /* Selected radio option */
-        [data-testid="column"]:first-child .stRadio input:checked + div {
+        /* Selected state */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio input:checked ~ label,
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child .stRadio label:has(input:checked) {
             background: #e8f5e9 !important;
-            border-color: #81c784 !important;
+            border-color: #66bb6a !important;
             font-weight: 600 !important;
+            box-shadow: 0 2px 8px rgba(102, 187, 106, 0.2) !important;
+        }
+        
+        /* Ensure the Steps heading doesn't take extra space */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child h3 {
+            margin-bottom: 1rem !important;
+            flex-shrink: 0 !important;
+        }
+        
+        /* Goals section styling */
+        [data-testid="stHorizontalBlock"] > [data-testid="column"]:first-child h4 {
+            margin-top: auto !important;
+            padding-top: 1.5rem !important;
+            border-top: 2px solid #e0e0e0 !important;
+            flex-shrink: 0 !important;
         }
         
         /* Card styles */
@@ -87,35 +105,7 @@ def inject_css():
             border: 1px solid #d4eed8;
             border-radius: 12px 12px 0 0;
             margin-bottom: 0;
-        }
-        
-        /* Chat container */
-        .chat-container {
-            border: 1px solid #d4eed8;
-            border-top: none;
-            border-radius: 0 0 12px 12px;
-            background: #E8F5E9;
-            padding: 1rem;
-            margin-bottom: 1rem;
-        }
-        
-        /* Custom scrollbar for the container */
-        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar {
-            width: 8px;
-        }
-        
-        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-track {
-            background: #d4eed8;
-            border-radius: 10px;
-        }
-        
-        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-thumb {
-            background: #81c784;
-            border-radius: 10px;
-        }
-        
-        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-thumb:hover {
-            background: #66bb6a;
+            margin-top: 1rem;
         }
         
         /* Compact chat message styling */
@@ -127,6 +117,25 @@ def inject_css():
         /* Hide the default chat input label */
         .stChatInput label {
             display: none !important;
+        }
+        
+        /* Scrollbar styling for chat container */
+        .stChatMessage::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .stChatMessage::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        .stChatMessage::-webkit-scrollbar-thumb {
+            background: #81c784;
+            border-radius: 10px;
+        }
+        
+        .stChatMessage::-webkit-scrollbar-thumb:hover {
+            background: #66bb6a;
         }
         
         /* Remove extra spacing */
@@ -148,13 +157,6 @@ def inject_css():
         .stButton>button:hover{
             background:#d54d45;
             transform: translateY(-1px);
-        }
-        
-        /* Goals section at bottom of sidebar */
-        [data-testid="column"]:first-child h4 {
-            margin-top: auto;
-            padding-top: 2rem;
-            border-top: 2px solid #e8f5e9;
         }
         </style>""",
         unsafe_allow_html=True,
@@ -182,14 +184,13 @@ def chat_card(st, state):
     st.markdown("<div class='chat-header'>Chat with Sylvia</div>", unsafe_allow_html=True)
     
     # Create a container with fixed height for scrolling
-    # The height parameter makes it scrollable automatically
     with st.container(height=400, border=True):
         # Display all messages
         for m in state.messages:
             with st.chat_message(m["role"]):
                 st.markdown(m["content"])
     
-    # Chat input at the bottom (outside the scrollable container)
+    # Chat input at the bottom
     user_text = st.chat_input("Describe your learning task or ask for guidance…")
     
     return user_text
