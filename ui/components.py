@@ -1,4 +1,5 @@
-# ui/components.py
+
+# ui/components.py - Alternative Version with Streamlit Container
 import streamlit as st
 
 def inject_css():
@@ -24,45 +25,55 @@ def inject_css():
             color:#0D2B12;
         }
         
-        /* Chat section styles */
-        .chat-section {
-            background:#E8F5E9;
-            border:1px solid #d4eed8;
-            border-radius:16px;
-            padding: 0;
-            margin-top: 1rem;
-            overflow: hidden;
-        }
-        
+        /* Chat header styling */
         .chat-header{
             background:#dff3e6;
             padding:12px 16px;
             font-weight:700;
             color:#0D2B12;
-            border-bottom:1px solid #d4eed8;
-            margin: 0;
+            border: 1px solid #d4eed8;
+            border-radius: 12px 12px 0 0;
+            margin-bottom: 0;
         }
         
-        /* Remove extra spacing around chat messages */
+        /* Chat container */
+        .chat-container {
+            border: 1px solid #d4eed8;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            background: #E8F5E9;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* Custom scrollbar for the container */
+        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-track {
+            background: #d4eed8;
+            border-radius: 10px;
+        }
+        
+        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-thumb {
+            background: #81c784;
+            border-radius: 10px;
+        }
+        
+        div[data-testid="stVerticalBlock"]:has(> div[data-testid="stChatMessage"])::-webkit-scrollbar-thumb:hover {
+            background: #66bb6a;
+        }
+        
+        /* Compact chat message styling */
         .stChatMessage {
-            padding: 0.5rem 1rem;
-        }
-        
-        /* Chat input styling */
-        .stChatInput {
-            border-top:1px solid #d4eed8;
+            padding: 0.5rem 0 !important;
+            margin-bottom: 0.5rem !important;
         }
         
         /* Hide the default chat input label */
         .stChatInput label {
-            display: none;
-        }
-        
-        /* Compact the chat container */
-        [data-testid="stChatMessageContainer"] {
-            max-height: 400px;
-            overflow-y: auto;
-            padding: 0.5rem;
+            display: none !important;
         }
         
         /* Remove extra spacing */
@@ -107,21 +118,18 @@ def shell_left(st, state):
                 st.rerun()
 
 def chat_card(st, state):
-    # Chat header without wrapping divs
-    st.markdown("""
-        <div class='chat-section'>
-            <div class='chat-header'>Chat with Sylvia</div>
-        </div>
-    """, unsafe_allow_html=True)
+    # Chat header
+    st.markdown("<div class='chat-header'>Chat with Sylvia</div>", unsafe_allow_html=True)
     
-    # Create a container for messages with limited height
-    with st.container():
-        # Display recent messages
-        for m in state.messages[-20:]:  # Limit to last 20 messages to avoid clutter
+    # Create a container with fixed height for scrolling
+    # The height parameter makes it scrollable automatically
+    with st.container(height=400, border=True):
+        # Display all messages
+        for m in state.messages:
             with st.chat_message(m["role"]):
                 st.markdown(m["content"])
     
-    # Chat input at the bottom
+    # Chat input at the bottom (outside the scrollable container)
     user_text = st.chat_input("Describe your learning task or ask for guidance…")
     
     return user_text
