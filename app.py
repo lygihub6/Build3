@@ -1,4 +1,10 @@
-
+try:
+    from steps import REGISTRY
+except Exception as e:
+    import streamlit as st
+    st.error(f"Failed to load steps: {e}")
+    REGISTRY = {}
+    
 # app.py
 import streamlit as st
 from state import get_state
