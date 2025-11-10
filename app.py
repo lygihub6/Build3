@@ -22,14 +22,19 @@ except Exception as e:
     print(f"[app] AI service unavailable: {e}")
     _ai_ok = False
 
-st.set_page_config(page_title="Sylvia – Learning Facilitator", page_icon="🎓", layout="wide")
+st.set_page_config(
+    page_title="Sylvia – Learning Facilitator", 
+    page_icon="🎓", 
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 def main():
     state = get_state(st)
     inject_css()
 
-    # --- Layout ------------------------------------------------------------
-    left, main = st.columns([1, 2], gap="large")
+    # --- Layout with adjusted ratios for full screen usage ------------
+    left, main = st.columns([1, 3], gap="large")  # Changed from [1, 2] to [1, 3]
 
     # Left: simple nav using whatever steps loaded successfully
     with left:
@@ -42,7 +47,7 @@ def main():
             idx = keys.index(state.current_step) if state.current_step in keys else 0
             
             # Add spacing before radio buttons
-            for i in range(3):
+            for i in range(2):
                 st.markdown("")
             
             choice = st.radio(
@@ -56,7 +61,7 @@ def main():
             state.current_step = keys[labels.index(choice)]
             
             # Add spacing after radio buttons to push goals down
-            for i in range(20):
+            for i in range(15):
                 st.markdown("")
             
         else:
