@@ -1,18 +1,21 @@
 # steps/__init__.py
 from .goals import GoalsStep
+from .task_analysis import TaskAnalysisStep
+from .strategies import StrategiesStep
+from .time_plan import TimePlanStep
+from .resources import ResourcesStep
 from .reflection import ReflectionStep
-# from .task_analysis import TaskAnalysisStep
-# from .strategies import StrategiesStep
-# from .time_plan import TimePlanStep
-# from .resources import ResourcesStep
-# from .feedback import FeedbackStep
+from .feedback import FeedbackStep
+# optional:
+# from .save_session import SaveStep
 
 REGISTRY = {
     GoalsStep.key: GoalsStep(),
+    TaskAnalysisStep.key: TaskAnalysisStep(),
+    StrategiesStep.key: StrategiesStep(),
+    TimePlanStep.key: TimePlanStep(),
+    ResourcesStep.key: ResourcesStep(),
     ReflectionStep.key: ReflectionStep(),
-    # "task_analysis": TaskAnalysisStep(),
-    # "strategies": StrategiesStep(),
-    # "time_plan": TimePlanStep(),
-    # "resources": ResourcesStep(),
-    # "feedback": FeedbackStep(),
+    FeedbackStep.key: FeedbackStep(),
+    # "save": SaveStep(),
 }
