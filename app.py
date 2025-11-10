@@ -1,3 +1,4 @@
+
 # app.py
 import streamlit as st
 from state import get_state
@@ -33,23 +34,37 @@ def main():
     # Left: simple nav using whatever steps loaded successfully
     with left:
         st.markdown("### 🧭 Steps")
+        st.markdown("")  # Small spacer
+        
         if REGISTRY:
             labels = [f"{m.icon} {m.label}" for m in REGISTRY.values()]
             keys = list(REGISTRY.keys())
             idx = keys.index(state.current_step) if state.current_step in keys else 0
+            
+            # Add spacing before radio buttons
+            for i in range(3):
+                st.markdown("")
+            
             choice = st.radio(
                 "Workflow",
                 labels,
                 index=idx,
                 label_visibility="collapsed",
             )
+            
             # map back to step key
             state.current_step = keys[labels.index(choice)]
+            
+            # Add spacing after radio buttons to push goals down
+            for i in range(20):
+                st.markdown("")
+            
         else:
             st.info("No step modules available. Chat is still available below.")
 
-        # show current goals if any
+        # show current goals if any at the bottom
         if getattr(state, "learning_goals", None):
+            st.markdown("---")
             st.markdown("#### 🎯 Your Goals")
             for i, g in enumerate(state.learning_goals, 1):
                 st.write(f"{i}. {g}")
@@ -64,7 +79,7 @@ def main():
         else:
             st.warning("Step UI unavailable. Use the chat below for guidance.")
 
-        # Shared chat (removed the horizontal rule to reduce spacing)
+        # Shared chat
         user_text = chat_card(st, state)
         if user_text:
             # append user message
