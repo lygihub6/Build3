@@ -96,17 +96,32 @@ def inject_css():
             color:#0D2B12;
         }
         
+        /* Chat section wrapper */
+        .chat-section-wrapper {
+            background: #E8F5E9;
+            border: 1px solid #d4eed8;
+            border-radius: 12px;
+            padding: 0;
+            margin-top: 1rem;
+            overflow: hidden;
+        }
+        
         /* Chat header styling - full width */
         .chat-header{
             background:#dff3e6;
             padding:12px 16px;
             font-weight:700;
             color:#0D2B12;
-            border: 1px solid #d4eed8;
-            border-radius: 12px 12px 0 0;
-            margin-bottom: 0;
-            margin-top: 1rem;
+            border-bottom: 1px solid #d4eed8;
+            margin: 0;
             width: 100%;
+        }
+        
+        /* Chat input area - directly under header */
+        .chat-input-section {
+            background: #f8f9fa;
+            border-bottom: 1px solid #d4eed8;
+            padding: 12px 16px;
         }
         
         /* Make chat container full width */
@@ -217,17 +232,27 @@ def shell_left(st, state):
                 st.rerun()
 
 def chat_card(st, state):
+    # Wrapper div for the entire chat section
+    st.markdown("<div class='chat-section-wrapper'>", unsafe_allow_html=True)
+    
     # Chat header
     st.markdown("<div class='chat-header'>Chat with Sylvia</div>", unsafe_allow_html=True)
     
-    # Create a container with fixed height for scrolling
-    with st.container(height=400, border=True):
-        # Display all messages
-        for m in state.messages:
-            with st.chat_message(m["role"]):
-                st.markdown(m["content"])
-    
-    # Chat input at the bottom
+    # Chat input RIGHT UNDER the header
+    st.markdown("<div class='chat-input-section'>", unsafe_allow_html=True)
     user_text = st.chat_input("Describe your learning task or ask for guidance…")
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Messages container below the input
+    with st.container(height=350, border=False):
+        # Display all messages
+        if state.messages:
+            for m in state.messages:
+                with st.chat_message(m["role"]):
+                    st.markdown(m["content"])
+        else:
+            st.markdown("<div style='text-align: center; color: #94a3b8; padding: 2rem;'>No messages yet. Start chatting with Sylvia!</div>", unsafe_allow_html=True)
+    
+    st.markdown("</div>", unsafe_allow_html=True)  # Close wrapper
     
     return user_text
