@@ -4,19 +4,33 @@ import streamlit as st
 def inject_css():
     st.markdown(
         """<style>
-        /* AGGRESSIVE: Remove ALL Streamlit width constraints */
+        /* REMOVE ALL BOTTOM SPACING - Make it full screen */
         .main .block-container {
             padding-top: 1.5rem !important;
-            padding-bottom: 0rem !important;
+            padding-bottom: 0 !important;
             padding-left: 1rem !important;
             padding-right: 1rem !important;
             max-width: 100% !important;
             width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Remove bottom margin from main container */
+        .main {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
         }
         
         /* Override any Streamlit max-width settings */
         .stApp {
             max-width: 100% !important;
+            margin-bottom: 0 !important;
+        }
+        
+        /* Remove bottom spacing from all elements */
+        section.main > div {
+            padding-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
         
         /* Make ALL content fill available width */
@@ -42,6 +56,12 @@ def inject_css():
         .element-container {
             width: 100% !important;
             max-width: 100% !important;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Remove bottom spacing from last elements */
+        .element-container:last-child {
+            margin-bottom: 0 !important;
         }
         
         /* Add spacing between radio button items */
@@ -96,13 +116,14 @@ def inject_css():
             color:#0D2B12;
         }
         
-        /* Chat section wrapper */
+        /* Chat section wrapper - NO bottom margin */
         .chat-section-wrapper {
             background: #E8F5E9;
             border: 1px solid #d4eed8;
             border-radius: 12px;
             padding: 0;
             margin-top: 1rem;
+            margin-bottom: 0 !important;
             overflow: hidden;
         }
         
@@ -145,11 +166,6 @@ def inject_css():
         /* Hide the default chat input label */
         .stChatInput label {
             display: none !important;
-        }
-        
-        /* Remove extra spacing */
-        .element-container {
-            margin-bottom: 0.5rem;
         }
         
         /* Adjust button styling */
@@ -209,6 +225,25 @@ def inject_css():
         div[data-testid="column"] > div {
             width: 100% !important;
             max-width: 100% !important;
+        }
+        
+        /* Remove Streamlit footer/bottom elements */
+        footer {
+            display: none !important;
+        }
+        
+        /* Hide "Made with Streamlit" */
+        #MainMenu {
+            display: none !important;
+        }
+        
+        footer {
+            visibility: hidden !important;
+        }
+        
+        /* Remove any extra space at bottom */
+        .css-1d391kg, .css-12oz5g7 {
+            padding-bottom: 0 !important;
         }
         </style>""",
         unsafe_allow_html=True,
