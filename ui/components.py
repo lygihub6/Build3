@@ -1,5 +1,4 @@
-
-# ui/components.py - Alternative Version with Streamlit Container
+# ui/components.py
 import streamlit as st
 
 def inject_css():
@@ -9,6 +8,60 @@ def inject_css():
         .main .block-container {
             padding-top: 2rem;
             padding-bottom: 0rem;
+        }
+        
+        /* Make the left column stretch full height and distribute content */
+        [data-testid="column"]:first-child {
+            display: flex !important;
+            flex-direction: column !important;
+            min-height: calc(100vh - 4rem) !important;
+        }
+        
+        /* Style the Steps section */
+        [data-testid="column"]:first-child > div {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        
+        /* Distribute radio buttons evenly with spacing */
+        [data-testid="column"]:first-child .stRadio {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 !important;
+            justify-content: space-evenly !important;
+            padding: 2rem 0 !important;
+        }
+        
+        /* Space out individual radio items */
+        [data-testid="column"]:first-child .stRadio > div {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 1.5rem !important;
+        }
+        
+        /* Make each radio option larger and more prominent */
+        [data-testid="column"]:first-child .stRadio label {
+            padding: 0.75rem 1rem !important;
+            border-radius: 12px !important;
+            transition: all 0.2s ease !important;
+            cursor: pointer !important;
+            background: #f8fafc !important;
+            border: 2px solid transparent !important;
+            margin: 0.5rem 0 !important;
+        }
+        
+        /* Hover effect for radio options */
+        [data-testid="column"]:first-child .stRadio label:hover {
+            background: #e8f5e9 !important;
+            border-color: #d4eed8 !important;
+        }
+        
+        /* Selected radio option */
+        [data-testid="column"]:first-child .stRadio input:checked + div {
+            background: #e8f5e9 !important;
+            border-color: #81c784 !important;
+            font-weight: 600 !important;
         }
         
         /* Card styles */
@@ -95,6 +148,13 @@ def inject_css():
         .stButton>button:hover{
             background:#d54d45;
             transform: translateY(-1px);
+        }
+        
+        /* Goals section at bottom of sidebar */
+        [data-testid="column"]:first-child h4 {
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 2px solid #e8f5e9;
         }
         </style>""",
         unsafe_allow_html=True,
