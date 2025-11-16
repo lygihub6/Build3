@@ -68,12 +68,14 @@ def main():
         else:
             st.info("No step modules available. Chat is still available below.")
 
-        # show current goals if any at the bottom
-        if getattr(state, "learning_goals", None):
-            st.markdown("---")
-            st.markdown("#### 🎯 Your Goals")
-            for i, g in enumerate(state.learning_goals, 1):
-                st.write(f"{i}. {g}")
+# Inside the sidebar section that displays goals:
+if getattr(state, "learning_goals", None):
+    st.markdown("---")
+    st.markdown("#### 🎯 Your Goals")
+    for i, goal in enumerate(state.learning_goals, 1):
+        goal_type = state.goal_types[i - 1] if i - 1 < len(state.goal_types) else "mastery"
+        label = "Mastery" if goal_type == "mastery" else "Performance"
+        st.write(f"{i}. {goal} ({label} goal)")
 
     # Main: render step or fallback
     with main:
