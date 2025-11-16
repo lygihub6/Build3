@@ -29,53 +29,49 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
+# Inside main()
 def main():
     state = get_state(st)
     inject_css()
-
-    # --- Layout with maximum space for content ------------
-    # Changed to [1, 4.5] ratio: sidebar ~18%, main content ~82%
     left, main = st.columns([1, 4.5], gap="large")
 
     # Left: simple nav using whatever steps loaded successfully
     with left:
         st.markdown("### 🧭 Steps")
         st.markdown("")  # Small spacer
-        
+
         if REGISTRY:
             labels = [f"{m.icon} {m.label}" for m in REGISTRY.values()]
             keys = list(REGISTRY.keys())
             idx = keys.index(state.current_step) if state.current_step in keys else 0
-            
-            # Add spacing before radio buttons
-            for i in range(2):
+
+            # Spacing before radio buttons
+            for _ in range(2):
                 st.markdown("")
-            
+
             choice = st.radio(
                 "Workflow",
                 labels,
                 index=idx,
                 label_visibility="collapsed",
             )
-            
-            # map back to step key
             state.current_step = keys[labels.index(choice)]
             
-            # Add spacing after radio buttons to push goals down
-            for i in range(15):
+            # Spacing after radio buttons to push goals down
+            for _ in range(15):
                 st.markdown("")
-            
         else:
             st.info("No step modules available. Chat is still available below.")
 
-# Inside the sidebar section that displays goals:
-if getattr(state, "learning_goals", None):
-    st.markdown("---")
-    st.markdown("#### 🎯 Your Goals")
-    for i, goal in enumerate(state.learning_goals, 1):
-        goal_type = state.goal_types[i - 1] if i - 1 < len(state.goal_types) else "mastery"
-        label = "Mastery" if goal_type == "mastery" else "Performance"
-        st.write(f"{i}. {goal} ({label} goal)")
+        # Show current goals if any at the bottom
+        if getattr(state, "learning_goals", None):
+            st.markdown("---")
+            st.markdown("#### 🎯 Your Goals")
+            for i, goal in enumerate(state.learning_goals, 1):
+                # If you’re storing goal types in state.goal_types
+                goal_type = state.goal_types[i - 1] if i - 1 < len(state.goal_types) else "mastery"
+                label = "Mastery" if goal_type == "mastery" else "Performance"
+                st.write(f"{i}. {goal} ({label} goal)")
 
     # Main: render step or fallback
     with main:
