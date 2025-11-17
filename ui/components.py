@@ -65,24 +65,18 @@ h4 { font-size: 1.25rem; }
 
 /* Input labels and text */
 label, .stTextInput label, .stTextArea label {
-    font-size: 16px !important;
+    font-size: 24px !important;
 }
 
 /* Button text */
 .stButton button {
-    font-size: 16px !important;
+    font-size: 24px !important;
 }
 
 /* Radio button text */
 .stRadio label {
-    font-size: 16px !important;
+    font-size: 20px !important;
 }
-
-
-
-
-
-
 
 
         body {
