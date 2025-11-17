@@ -25,16 +25,19 @@ Each step is responsible for rendering its own UI elements and calling
 the Gemini API via the helper exposed in ``services/ai.py`` when
 appropriate.
 """
+import streamlit as st
 
-import streamlit as st 
+from state import (
+    init_state, get_current_session
+)
 
-from state import init_state, get_current_session
 from ui.components import (
     inject_custom_css,
     render_header,
     render_session_toolbar,
     render_module_selector,
 )
+
 from steps import STEPS, get_step_by_id
 
 def main():
