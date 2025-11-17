@@ -232,17 +232,10 @@ def render_module_selector(active_step: Optional[str]) -> str:
     The selection is stored in ``st.session_state['active_step']``. Each
     module is displayed as a button with an optional description when
     active. Buttons are created in the order defined by ``steps.STEPS``.
-
-    Args:
-        active_step: the identifier of the currently selected module.
-
-    Returns:
-        The ID of the module selected by the user.
     """
-    # Import steps lazily to avoid circular imports at module load time
     from steps import STEPS
 
-    st.markdown("#### Learning modules")
+    # Heading is now handled in app.py, so we don't print it here
     selected_id = active_step or (STEPS[0].id if STEPS else None)
     for step in STEPS:
         is_active = step.id == selected_id
@@ -253,4 +246,5 @@ def render_module_selector(active_step: Optional[str]) -> str:
         if is_active:
             st.caption(step.description)
     return selected_id
+
 
