@@ -39,6 +39,27 @@ def inject_custom_css() -> None:
             css = f.read()
     else:
         css = """
+    :root {
+      --color-primary: #2563eb;
+      ...  # your existing variables
+    }
+    body {
+      background: var(--color-bg-alt);
+    }
+    .app-header {
+      ...    # existing header styles
+    }
+    .module-panel {
+      ...    # existing panel styles
+    }
+    /* Remove Streamlit's default left/right padding on the main block-container */
+    .main > div {
+      padding-left: 0rem;
+      padding-right: 0rem;
+    }
+"""
+st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
         :root {
             --color-primary: #2563eb;
             --color-primary-dark: #1e40af;
