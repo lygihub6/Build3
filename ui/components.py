@@ -70,7 +70,7 @@ label, .stTextInput label, .stTextArea label {
 
 /* Button text */
 .stButton button {
-    font-size: 24px !important;
+    font-size: 30px !important;
 }
 
 /* Radio button text */
