@@ -40,17 +40,19 @@ class GoalsStep(BaseStep):
             'try **"review 10 practice problems on quadratic equations."**'
         )
 
+        # Task information section
+        st.markdown("### Task Information")
+        
+        task_name = st.text_input(
+            "What task or assignment are you working on?",
+            value=session.get("task_name", ""),
+            key="goal_task_name",
+            placeholder="e.g., Research paper on climate change",
+        )
+
         col1, col2 = st.columns(2)
-
-        # -------- First column: task name, type, deadline --------
+        
         with col1:
-            task_name = st.text_input(
-                "What task or assignment are you working on?",
-                value=session.get("task_name", ""),
-                key="goal_task_name",
-                placeholder="e.g., Research paper on climate change",
-            )
-
             task_type_options = [
                 "",
                 "Research paper",
@@ -74,7 +76,7 @@ class GoalsStep(BaseStep):
                 key="goal_task_type",
             )
 
-            # Date input returns a datetime.date or None (depending on version/config)
+        with col2:
             deadline_date = st.date_input(
                 "Target completion date (optional)",
                 key="goal_deadline",
@@ -82,160 +84,199 @@ class GoalsStep(BaseStep):
                 help="You can leave this as default if you're not sure.",
             )
 
-        # -------- Second column: goal type and description --------
-        with col2:
-            # Card-based goal type selector
-            st.markdown(
-                """
-                <style>
-                /* Card-based goal selector */
-                .goal-type-cards-container {
-                    margin-bottom: 1rem;
-                }
-                
-                .goal-type-cards-label {
-                    display: block;
-                    font-weight: 500;
-                    color: #1f2937;
-                    margin-bottom: 0.75rem;
-                    font-size: 0.875rem;
-                }
-                
-                .goal-type-cards {
-                    display: grid;
-                    grid-template-columns: 1fr 1fr;
-                    gap: 0.75rem;
-                    margin-bottom: 1rem;
-                }
-                
-                .goal-card {
-                    padding: 1rem;
-                    border: 2px solid #e5e7eb;
-                    border-radius: 0.5rem;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                    background: white;
-                    position: relative;
-                }
-                
-                .goal-card:hover {
-                    border-color: #cbd5e1;
-                    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-                }
-                
-                .goal-card.selected {
-                    border-color: #8b5cf6;
-                    background: #f3f0ff;
-                }
-                
-                .goal-card.performance.selected {
-                    border-color: #ec4899;
-                    background: #fdf2f8;
-                }
-                
-                .goal-card-header {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5rem;
-                    margin-bottom: 0.5rem;
-                }
-                
-                .goal-card-icon {
-                    width: 20px;
-                    height: 20px;
-                    border-radius: 0.375rem;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-size: 0.75rem;
-                }
-                
-                .goal-card.mastery .goal-card-icon {
-                    background: #8b5cf6;
-                }
-                
-                .goal-card.performance .goal-card-icon {
-                    background: #ec4899;
-                }
-                
-                .goal-card-title {
-                    font-weight: 600;
-                    color: #1f2937;
-                    font-size: 0.875rem;
-                }
-                
-                .goal-card-description {
-                    font-size: 0.75rem;
-                    color: #6b7280;
-                    line-height: 1.4;
-                }
-                
-                /* Hide the default radio buttons */
-                .stRadio {
-                    display: none !important;
-                }
-                </style>
-                """,
-                unsafe_allow_html=True,
-            )
+        # Goal type and description section
+        st.markdown("### Your Goal")
+        
+        # Card-based goal type selector
+        st.markdown(
+            """
+            <style>
+            /* Card-based goal selector */
+            .goal-type-cards-container {
+                margin-bottom: 1.5rem;
+                margin-top: 1rem;
+            }
             
-            # Hidden radio buttons for state management
-            goal_type_radio = st.radio(
-                "Which best matches your main goal for this task?",
-                options=[
-                    "mastery (understand deeply)",
-                    "performance (get a grade/score)",
-                ],
-                index=0 if session.get("goal_type", "mastery") == "mastery" else 1,
-                key="goal_type_radio",
-            )
+            .goal-type-cards-label {
+                display: block;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 1rem;
+                font-size: 1rem;
+            }
             
-            # Determine selected state
-            current_goal = "mastery" if goal_type_radio.startswith("mastery") else "performance"
-            mastery_selected = "selected" if current_goal == "mastery" else ""
-            performance_selected = "selected" if current_goal == "performance" else ""
+            .goal-type-cards {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+                margin-bottom: 1.5rem;
+            }
             
-            # Visual card selector
-            st.markdown(
-                f"""
-                <div class="goal-type-cards-container">
-                    <label class="goal-type-cards-label">Which best matches your main goal for this task?</label>
-                    <div class="goal-type-cards">
-                        <div class="goal-card mastery {mastery_selected}" onclick="
-                            const radios = parent.document.querySelectorAll('input[type=radio]');
-                            if (radios[0]) radios[0].click();
-                        ">
-                            <div class="goal-card-header">
-                                <div class="goal-card-icon">🌟</div>
-                                <div class="goal-card-title">Mastery</div>
-                            </div>
-                            <div class="goal-card-description">Understand deeply</div>
+            .goal-card {
+                padding: 1.25rem;
+                border: 2px solid #e5e7eb;
+                border-radius: 0.75rem;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                background: white;
+                position: relative;
+                min-height: 100px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+            
+            .goal-card:hover {
+                border-color: #9ca3af;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                transform: translateY(-2px);
+            }
+            
+            .goal-card.selected {
+                border-color: #8b5cf6;
+                background: #f5f3ff;
+                box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+            }
+            
+            .goal-card.performance.selected {
+                border-color: #ec4899;
+                background: #fdf2f8;
+                box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+            }
+            
+            .goal-card-header {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .goal-card-icon {
+                width: 28px;
+                height: 28px;
+                border-radius: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                flex-shrink: 0;
+            }
+            
+            .goal-card.mastery .goal-card-icon {
+                background: #8b5cf6;
+            }
+            
+            .goal-card.performance .goal-card-icon {
+                background: #ec4899;
+            }
+            
+            .goal-card-title {
+                font-weight: 600;
+                color: #1f2937;
+                font-size: 1.125rem;
+            }
+            
+            .goal-card-description {
+                font-size: 0.875rem;
+                color: #6b7280;
+                line-height: 1.5;
+                padding-left: 2.5rem;
+            }
+            
+            /* Hide the default radio buttons */
+            .stRadio {
+                display: none !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        # Hidden radio buttons for state management
+        goal_type_radio = st.radio(
+            "Which best matches your main goal for this task?",
+            options=[
+                "mastery (understand deeply)",
+                "performance (get a grade/score)",
+            ],
+            index=0 if session.get("goal_type", "mastery") == "mastery" else 1,
+            key="goal_type_radio",
+        )
+        
+        # Determine selected state
+        current_goal = "mastery" if goal_type_radio.startswith("mastery") else "performance"
+        mastery_selected = "selected" if current_goal == "mastery" else ""
+        performance_selected = "selected" if current_goal == "performance" else ""
+        
+        # Visual card selector
+        st.markdown(
+            f"""
+            <div class="goal-type-cards-container">
+                <label class="goal-type-cards-label">Which best matches your main goal for this task?</label>
+                <div class="goal-type-cards">
+                    <div class="goal-card mastery {mastery_selected}" id="mastery-card">
+                        <div class="goal-card-header">
+                            <div class="goal-card-icon">🌟</div>
+                            <div class="goal-card-title">Mastery</div>
                         </div>
-                        <div class="goal-card performance {performance_selected}" onclick="
-                            const radios = parent.document.querySelectorAll('input[type=radio]');
-                            if (radios[1]) radios[1].click();
-                        ">
-                            <div class="goal-card-header">
-                                <div class="goal-card-icon">🏆</div>
-                                <div class="goal-card-title">Performance</div>
-                            </div>
-                            <div class="goal-card-description">Get a grade/score</div>
+                        <div class="goal-card-description">Understand deeply</div>
+                    </div>
+                    <div class="goal-card performance {performance_selected}" id="performance-card">
+                        <div class="goal-card-header">
+                            <div class="goal-card-icon">🏆</div>
+                            <div class="goal-card-title">Performance</div>
                         </div>
+                        <div class="goal-card-description">Get a grade/score</div>
                     </div>
                 </div>
-                """,
-                unsafe_allow_html=True,
-            )
-            
-            goal_description = st.text_area(
-                "Describe your **mastery goal** in your own words",
-                value=session.get("goal_description", ""),
-                key="goal_description",
-                placeholder=(
-                    "What do you want to understand or be able to do after this task?"
-                ),
-                height=120,
-            )
+            </div>
+            <script>
+                // Add click handlers for the goal cards
+                const iframe = window.parent.document.querySelector('iframe[title="streamlit_folium.st_folium"]') || window.frameElement;
+                if (iframe) {{
+                    const parentDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    
+                    const masteryCard = parentDoc.getElementById('mastery-card');
+                    const performanceCard = parentDoc.getElementById('performance-card');
+                    
+                    if (masteryCard) {{
+                        masteryCard.onclick = function() {{
+                            const radios = window.parent.document.querySelectorAll('input[type="radio"]');
+                            for (let i = 0; i < radios.length; i++) {{
+                                if (radios[i].value && radios[i].value.includes('mastery')) {{
+                                    radios[i].click();
+                                    break;
+                                }}
+                            }}
+                        }};
+                    }}
+                    
+                    if (performanceCard) {{
+                        performanceCard.onclick = function() {{
+                            const radios = window.parent.document.querySelectorAll('input[type="radio"]');
+                            for (let i = 0; i < radios.length; i++) {{
+                                if (radios[i].value && radios[i].value.includes('performance')) {{
+                                    radios[i].click();
+                                    break;
+                                }}
+                            }}
+                        }};
+                    }}
+                }}
+            </script>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        goal_description = st.text_area(
+            "Describe your **mastery goal** in your own words",
+            value=session.get("goal_description", ""),
+            key="goal_description",
+            placeholder=(
+                "What do you want to understand or be able to do after this task?"
+            ),
+            height=120,
+        )
 
         # -------- Save button --------
         if st.button("Save goal", key="save_goal_main"):
@@ -341,11 +382,5 @@ class GoalsStep(BaseStep):
         # Display last AI response if available
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
-            st.markdown(st.session_state["ai_responses"][self.id])
-
-
-        # Display AI response
-        if st.session_state.get("ai_responses", {}).get(self.id):
-            st.markdown("##### 🤖 AI Suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
 
