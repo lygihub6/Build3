@@ -24,21 +24,18 @@ from state import (
 )
 
 
-    def inject_custom_css() -> None:
+def inject_custom_css() -> None:
+    """Inject custom CSS into the Streamlit app.
+
+    If a file named ``mockup.css`` exists in the project root, its
+    contents will be injected. Otherwise a minimal fallback style is
+    applied to approximate the design from the provided HTML mockup.
+    """
     css_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mockup.css")
 
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-else:
-        css = """ ...your fallback CSS string (with margin 0 0 1rem 0)... """
-
-    # 🔸 Force the header to sit below the toolbar – no negative margins
-    css += """
-    .app-header {
-        margin: 0 0 1rem 0 !important;
-    }
-    """
 
     else:
         # Fallback style based on the mockup
