@@ -45,13 +45,13 @@ def inject_custom_css() -> None:
         css = """
         :root {
             --color-primary: #aac2f2;
-            --color-primary-dark: #1e40af;
-            --color-primary-light: #dbeafe;
-            --color-bg-alt: #f9fafb;
+            --color-primary-dark: #aac2f2;
+            --color-primary-light: #aac2f2;
+            --color-bg-alt: #aac2f2;
             --color-surface: #ffffff;
             --color-border: #aac2f2;
-            --color-text: #1f2937;
-            --color-text-secondary: #6b7280;
+            --color-text: #aac2f2;
+            --color-text-secondary: #aac2f2;
             --radius-lg: 0.75rem;
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
         }
