@@ -364,26 +364,28 @@ def render_module_selector(active_step: Optional[str]) -> str:
     
     selected_id = st.session_state["active_step"]
 
+
+    # Wrap all module buttons in a container so we can style them via CSS
     st.markdown('<div class="module-list">', unsafe_allow_html=True)
 
-    selected_id = active_step or (STEPS[0].id if STEPS else None)
     for step in STEPS:
         is_active = step.id == selected_id
+        
+        # Start module item container
+        st.markdown('<div class="module-item">', unsafe_allow_html=True)
+        
         label = f"{step.emoji}  {step.label}"
         button_label = f"**{label}**" if is_active else label
+        
+        # When button is clicked, update state immediately
         if st.button(
             button_label,
             key=f"module_{step.id}",
             use_container_width=True,
         ):
+            st.session_state["active_step"] = step.id
             selected_id = step.id
-            is_active = True
-        if is_active:
-            st.caption(step.description)
-
-    st.markdown("</div>", unsafe_allow_html=True)
-
-    return selected_id
+          # Wrap all module buttons in a container so we can style them via CSS
     
         # Always render description, but control visibility with CSS for hover
         # Show description if active OR always visible for hover effect
