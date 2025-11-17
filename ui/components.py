@@ -43,7 +43,7 @@ def inject_custom_css() -> None:
         :root {
             --color-primary: #f5aa07;
             --color-primary-dark: #b5aeaf;
-            --color-primary-light: #fbe4d0;
+            --color-primary-light: #f7f9fc;
             --color-bg-alt: #fbe4d0;
             --color-surface: #80FF0000;
             --color-border: #dde3f5;
