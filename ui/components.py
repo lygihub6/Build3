@@ -122,6 +122,14 @@ def inject_custom_css() -> None:
             padding-left: 0.5rem !important;
             padding-right: 0.5rem !important;
         }
+/* Make module buttons (Goal Setting, Task Analysis, Learning Strategies, etc.) larger */
+.module-list .stButton > button {
+    font-size: 1rem;        /* increase text size */
+    font-weight: 600;       /* make it a bit bolder */
+    padding-top: 0.55rem;   /* keep vertical rhythm nice */
+    padding-bottom: 0.55rem;
+}
+        
         """
 
     # Extra CSS that should always apply (even if mockup.css is loaded)
@@ -141,7 +149,7 @@ def inject_custom_css() -> None:
 
     /* Learning modules sidebar buttons - increased height to 240px */
     [data-testid="column"]:first-child .stButton > button {
-        min-height: 240px !important;
+        min-height: 480px !important;
         height: auto;
         white-space: normal;
         text-align: left;
@@ -279,27 +287,49 @@ def render_session_toolbar() -> None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+from typing import Optional
+import streamlit as st
+
+
 def render_module_selector(active_step: Optional[str]) -> str:
     """Render the list of SRL modules and return the selected module ID.
 
     The selection is stored in ``st.session_state['active_step']``. Each
     module is displayed as a button with an optional description when
     active. Buttons are created in the order defined by ``steps.STEPS``.
+
+    Args:
+        active_step: the identifier of the currently selected module.
+
+    Returns:
+        The ID of the module selected by the user.
     """
-    from steps import STEPS  # lazy import to avoid circular dependency
+    # Import steps lazily to avoid circular imports at module load time
+    from steps import STEPS
+
+    st.markdown("#### Learning modules")
+
+    # Wrap all module buttons in a container so we can style them via CSS
+    st.markdown('<div class="module-list">', unsafe_allow_html=True)
 
     selected_id = active_step or (STEPS[0].id if STEPS else None)
-
     for step in STEPS:
         is_active = step.id == selected_id
         label = f"{step.emoji}  {step.label}"
         button_label = f"**{label}**" if is_active else label
-        if st.button(button_label, key=f"module_{step.id}", use_container_width=True):
+        if st.button(
+            button_label,
+            key=f"module_{step.id}",
+            use_container_width=True,
+        ):
             selected_id = step.id
         if is_active:
             st.caption(step.description)
 
+    st.markdown("</div>", unsafe_allow_html=True)
+
     return selected_id
+
 
 
 
