@@ -49,7 +49,7 @@ def inject_custom_css() -> None:
             --color-primary-light: #dbeafe;
             --color-bg-alt: #f9fafb;
             --color-surface: #ffffff;
-            --color-border: #e5e7eb;
+            --color-border: #aac2f2;
             --color-text: #1f2937;
             --color-text-secondary: #6b7280;
             --radius-lg: 0.75rem;
