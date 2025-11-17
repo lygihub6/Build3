@@ -29,17 +29,150 @@ class GoalsStep(BaseStep):
     description = "Define mastery-oriented goals for your current task."
 
     def render(self, session: Dict[str, Any]) -> None:
-        st.subheader("🎯 Goal Setting")
+        # Custom CSS for the goal setting page
         st.markdown(
-            "Focus on **mastery goals** – goals about understanding, skills, and growth, not just grades."
+            """
+            <style>
+            /* Goal setting page specific styles */
+            .goal-intro {
+                font-size: 1.1rem;
+                color: #1f2933;
+                margin-bottom: 1rem;
+                font-weight: 400;
+            }
+            
+            .goal-tip-box {
+                background: #e6f3ff;
+                border-left: 4px solid #3b82f6;
+                padding: 1rem 1.25rem;
+                margin: 1.25rem 0;
+                border-radius: 0.5rem;
+            }
+            
+            .goal-tip-box p {
+                margin: 0;
+                font-size: 1rem;
+                line-height: 1.6;
+                color: #1f2933;
+            }
+            
+            .goal-section {
+                background: white;
+                padding: 0;
+                border-radius: 0.5rem;
+                margin-bottom: 1.5rem;
+            }
+            
+            /* Input field styling */
+            .stTextInput > div > div > input,
+            .stTextArea > div > div > textarea,
+            .stSelectbox > div > div > select {
+                font-size: 1rem !important;
+                border-radius: 0.375rem !important;
+                border: 1px solid #e2e8f0 !important;
+            }
+            
+            /* Label styling */
+            .stTextInput > label,
+            .stTextArea > label,
+            .stSelectbox > label,
+            .stDateInput > label,
+            .stRadio > label {
+                font-size: 1rem !important;
+                font-weight: 500 !important;
+                color: #1f2933 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Radio button styling */
+            .stRadio > div {
+                gap: 1rem;
+            }
+            
+            .stRadio > div > label > div {
+                font-size: 1rem !important;
+                padding: 0.5rem 0 !important;
+            }
+            
+            /* Save button styling */
+            div[data-testid="column"] > div > button[kind="primary"],
+            div[data-testid="column"] > div > button {
+                background-color: #f59127;
+                color: white;
+                border: none;
+                padding: 0.625rem 1.5rem;
+                font-size: 1rem;
+                font-weight: 500;
+                border-radius: 0.5rem;
+                transition: background-color 0.2s;
+            }
+            
+            div[data-testid="column"] > div > button:hover {
+                background-color: #e07e1e;
+            }
+            
+            /* Saved goal summary card */
+            .saved-goal-card {
+                background: #fef9f3;
+                border: 1px solid #f2c9a3;
+                border-radius: 0.5rem;
+                padding: 1.25rem;
+                margin-top: 1.5rem;
+            }
+            
+            .saved-goal-card h5 {
+                color: #f59127;
+                font-size: 1.125rem;
+                margin-bottom: 1rem;
+                font-weight: 600;
+            }
+            
+            /* Divider styling */
+            hr {
+                margin: 2rem 0;
+                border: none;
+                border-top: 1px solid #e2e8f0;
+            }
+            
+            /* AI section styling */
+            .ai-section-header {
+                font-size: 1.25rem;
+                color: #1f2933;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+            }
+            
+            .ai-section-description {
+                font-size: 0.95rem;
+                color: #52606d;
+                margin-bottom: 1rem;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        st.subheader("🎯 Goal Setting")
+        
+        # Introduction text
+        st.markdown(
+            '<p class="goal-intro">Focus on <strong>mastery goals</strong> – goals about understanding, skills, and growth, not just grades.</p>',
+            unsafe_allow_html=True,
         )
 
-        # Tip about being specific
-        st.info(
-            'Tip: Be specific with your goals. Instead of **"study math,"** '
-            'try **"review 10 practice problems on quadratic equations."**'
+        # Tip box
+        st.markdown(
+            '''
+            <div class="goal-tip-box">
+                <p><strong>Tip:</strong> Be specific with your goals. Instead of <strong>"study math,"</strong> try <strong>"review 10 practice problems on quadratic equations."</strong></p>
+            </div>
+            ''',
+            unsafe_allow_html=True,
         )
 
+        # Main form section
+        st.markdown('<div class="goal-section">', unsafe_allow_html=True)
+        
         col1, col2 = st.columns(2)
 
         # -------- First column: task name, type, deadline --------
@@ -103,6 +236,8 @@ class GoalsStep(BaseStep):
                 height=120,
             )
 
+        st.markdown('</div>', unsafe_allow_html=True)
+
         # -------- Save button --------
         if st.button("Save goal", key="save_goal_main"):
             goal_type_value = (
@@ -142,7 +277,7 @@ class GoalsStep(BaseStep):
                 }
             )
 
-            # Keep a local “last saved goal” so it shows immediately this run
+            # Keep a local "last saved goal" so it shows immediately this run
             st.session_state["last_saved_goal"] = goal_payload
 
             st.success("Goal saved. Next, you can analyze the task or pick strategies.")
@@ -155,45 +290,60 @@ class GoalsStep(BaseStep):
             or saved_goal.get("goal_text")
             or saved_goal.get("goal_description")
         ):
-            st.markdown("##### Your saved goal")
-            with st.container():
-                if saved_goal.get("task_name"):
-                    st.markdown(f"**Task:** {saved_goal['task_name']}")
+            st.markdown(
+                '<div class="saved-goal-card"><h5>Your saved goal</h5>',
+                unsafe_allow_html=True,
+            )
+            
+            if saved_goal.get("task_name"):
+                st.markdown(f"**Task:** {saved_goal['task_name']}")
 
-                if saved_goal.get("task_type"):
-                    st.markdown(f"**Task type:** {saved_goal['task_type']}")
+            if saved_goal.get("task_type"):
+                st.markdown(f"**Task type:** {saved_goal['task_type']}")
 
-                goal_type_value = (
-                    saved_goal.get("goal_type") or session.get("goal_type")
+            goal_type_value = (
+                saved_goal.get("goal_type") or session.get("goal_type")
+            )
+            if goal_type_value:
+                if goal_type_value == "mastery":
+                    label = "mastery (understand deeply)"
+                else:
+                    label = "performance (get a grade/score)"
+                st.markdown(f"**Goal type:** {label}")
+
+            # Support both new key "goal_text" and older "goal_description"
+            goal_text = saved_goal.get("goal_text") or saved_goal.get(
+                "goal_description"
+            )
+            if goal_text:
+                st.markdown("**Mastery goal (in your own words):**")
+                st.markdown(f"> {goal_text}")
+
+            if saved_goal.get("deadline"):
+                st.markdown(
+                    f"**Target completion date:** {saved_goal['deadline']}"
                 )
-                if goal_type_value:
-                    if goal_type_value == "mastery":
-                        label = "mastery (understand deeply)"
-                    else:
-                        label = "performance (get a grade/score)"
-                    st.markdown(f"**Goal type:** {label}")
-
-                # Support both new key "goal_text" and older "goal_description"
-                goal_text = saved_goal.get("goal_text") or saved_goal.get(
-                    "goal_description"
-                )
-                if goal_text:
-                    st.markdown("**Mastery goal (in your own words):**")
-                    st.markdown(f"> {goal_text}")
-
-                if saved_goal.get("deadline"):
-                    st.markdown(
-                        f"**Target completion date:** {saved_goal['deadline']}"
-                    )
+            
+            st.markdown('</div>', unsafe_allow_html=True)
 
         # -------- Divider + AI helper --------
         st.markdown("---")
-        st.markdown("##### Ask AI to refine your goal")
+        
+        st.markdown(
+            '<h3 class="ai-section-header">Ask AI to refine your goal</h3>',
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            '<p class="ai-section-description">Describe what you want to achieve, and the assistant will suggest a clearer mastery goal.</p>',
+            unsafe_allow_html=True,
+        )
 
         user_msg = st.text_area(
-            "Describe what you want to achieve, and the assistant will suggest a clearer mastery goal.",
+            "Your message",
             key="goal_ai_input",
             height=100,
+            label_visibility="collapsed",
+            placeholder="Describe what you want to achieve...",
         )
         if (
             st.button("✨ Improve my goal", key="goal_ai_button")
@@ -206,5 +356,6 @@ class GoalsStep(BaseStep):
 
         # Display last AI response if available
         if st.session_state.get("ai_responses", {}).get(self.id):
-            st.markdown("###### AI suggestion")
+            st.markdown("##### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
+
