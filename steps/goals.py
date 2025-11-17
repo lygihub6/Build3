@@ -29,104 +29,140 @@ class GoalsStep(BaseStep):
     description = "Define mastery-oriented goals for your current task."
 
     def render(self, session: Dict[str, Any]) -> None:
-        # Global compact styling
+        # ULTRA COMPACT styling - minimum spacing everywhere
         st.markdown(
             """
             <style>
-            /* Global compact spacing */
+            /* Ultra compact global spacing */
             .block-container {
-                padding-top: 1rem !important;
-                padding-bottom: 1rem !important;
+                padding-top: 0.5rem !important;
+                padding-bottom: 0.5rem !important;
+                padding-left: 1rem !important;
+                padding-right: 1rem !important;
             }
             
-            /* All headers more compact */
+            /* Minimize ALL header spacing */
             h1, h2, h3, h4, h5, h6 {
-                margin-top: 0.5rem !important;
-                margin-bottom: 0.3rem !important;
+                margin-top: 0.25rem !important;
+                margin-bottom: 0.25rem !important;
                 padding-top: 0 !important;
                 padding-bottom: 0 !important;
+                line-height: 1.2 !important;
             }
             
-            /* Subheader specific */
+            /* Subheader */
             .stMarkdown h2 {
                 margin-top: 0 !important;
-                margin-bottom: 0.5rem !important;
+                margin-bottom: 0.3rem !important;
             }
             
-            /* Paragraphs and markdown */
-            .stMarkdown p {
-                margin-bottom: 0.5rem !important;
+            /* All markdown elements super tight */
+            .stMarkdown, .stMarkdown p, .stMarkdown div {
+                margin-bottom: 0.3rem !important;
+                margin-top: 0 !important;
             }
             
-            /* Info/warning/success boxes */
+            /* Info/success/warning boxes minimal */
             .stAlert {
-                padding: 0.5rem 0.75rem !important;
-                margin-bottom: 0.75rem !important;
+                padding: 0.4rem 0.6rem !important;
+                margin-top: 0.3rem !important;
+                margin-bottom: 0.4rem !important;
             }
             
-            /* Text inputs */
+            /* Text inputs ultra compact */
             .stTextInput, .stSelectbox, .stDateInput {
-                margin-bottom: 0.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0.3rem !important;
             }
             
             .stTextInput > label, .stSelectbox > label, .stDateInput > label {
-                margin-bottom: 0.25rem !important;
-                font-size: 0.9rem !important;
+                margin-bottom: 0.15rem !important;
+                font-size: 0.85rem !important;
+                padding-bottom: 0 !important;
             }
             
             .stTextInput > div, .stSelectbox > div, .stDateInput > div {
+                margin-top: 0 !important;
                 margin-bottom: 0 !important;
             }
             
-            /* Text areas */
+            .stTextInput input, .stSelectbox select {
+                padding-top: 0.4rem !important;
+                padding-bottom: 0.4rem !important;
+            }
+            
+            /* Text areas ultra compact */
             .stTextArea {
-                margin-bottom: 0.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 0.3rem !important;
             }
             
             .stTextArea > label {
-                margin-bottom: 0.25rem !important;
+                margin-bottom: 0.15rem !important;
+                font-size: 0.85rem !important;
+            }
+            
+            .stTextArea textarea {
+                min-height: 70px !important;
+            }
+            
+            /* Buttons minimal spacing */
+            .stButton {
+                margin-top: 0.3rem !important;
+                margin-bottom: 0.3rem !important;
+            }
+            
+            .stButton > button {
+                padding: 0.35rem 0.9rem !important;
                 font-size: 0.9rem !important;
             }
             
-            /* Buttons */
-            .stButton {
+            /* Columns tight */
+            .row-widget {
+                margin-bottom: 0.3rem !important;
+                gap: 0.5rem !important;
+            }
+            
+            /* All containers minimal margin */
+            .element-container {
+                margin-bottom: 0.15rem !important;
+            }
+            
+            div[data-testid="stVerticalBlock"] > div {
+                gap: 0.3rem !important;
+            }
+            
+            /* Horizontal rules thin */
+            hr {
                 margin-top: 0.5rem !important;
                 margin-bottom: 0.5rem !important;
             }
             
-            .stButton > button {
-                padding: 0.4rem 1rem !important;
-            }
-            
-            /* Columns */
-            .row-widget {
-                margin-bottom: 0.5rem !important;
-            }
-            
-            /* Containers */
-            .element-container {
-                margin-bottom: 0.25rem !important;
-            }
-            
-            /* Horizontal rules */
-            hr {
-                margin-top: 0.75rem !important;
-                margin-bottom: 0.75rem !important;
-            }
-            
-            /* Radio buttons */
+            /* Radio buttons compact */
             .stRadio {
-                margin-bottom: 0.5rem !important;
+                margin-bottom: 0.3rem !important;
+                margin-top: 0 !important;
             }
             
             .stRadio > label {
-                margin-bottom: 0.25rem !important;
+                margin-bottom: 0.15rem !important;
+                font-size: 0.85rem !important;
             }
             
-            /* Blockquotes (used in saved goal display) */
+            .stRadio > div {
+                gap: 0.3rem !important;
+            }
+            
+            /* Blockquotes minimal */
             blockquote {
-                margin: 0.25rem 0 !important;
-                padding: 0.5rem 1rem !important;
+                margin: 0.2rem 0 !important;
+                padding: 0.4rem 0.8rem !important;
+            }
+            
+            /* Spinners/status minimal */
+            .stSpinner, .stStatus {
+                margin-top: 0.3rem !important;
+                margin-bottom: 0.3rem !important;
             }
             </style>
             """,
@@ -192,16 +228,15 @@ class GoalsStep(BaseStep):
         st.markdown(
             """
             <style>
-            /* Make Your Goal section header more compact */
+            /* Minimize section headers */
             h3 {
-                margin-top: 0.5rem !important;
-                margin-bottom: 0.3rem !important;
+                margin-top: 0.25rem !important;
+                margin-bottom: 0.2rem !important;
             }
             
-            /* Make saved goal section more compact */
             h5 {
-                margin-top: 0.5rem !important;
-                margin-bottom: 0.3rem !important;
+                margin-top: 0.25rem !important;
+                margin-bottom: 0.2rem !important;
             }
             </style>
             """,
@@ -213,31 +248,31 @@ class GoalsStep(BaseStep):
         st.markdown(
             """
             <style>
-            /* Card-based goal selector - EXTRA COMPACT VERSION */
+            /* Card-based goal selector - ULTRA COMPACT */
             .goal-type-cards-container {
-                margin-bottom: 0.5rem;
-                margin-top: 0.25rem;
+                margin-bottom: 0.3rem;
+                margin-top: 0.15rem;
             }
             
             .goal-type-cards-label {
                 display: block;
                 font-weight: 600;
                 color: #1f2937;
-                margin-bottom: 0.4rem;
-                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+                font-size: 0.85rem;
             }
             
             .goal-type-cards {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 0.5rem;
-                margin-bottom: 0.5rem;
+                gap: 0.4rem;
+                margin-bottom: 0.3rem;
             }
             
             .goal-card {
-                padding: 0.6rem 0.8rem;
+                padding: 0.5rem 0.7rem;
                 border: 2px solid #e5e7eb;
-                border-radius: 0.5rem;
+                border-radius: 0.4rem;
                 cursor: pointer;
                 transition: all 0.2s ease;
                 background: white;
@@ -266,18 +301,18 @@ class GoalsStep(BaseStep):
             .goal-card-header {
                 display: flex;
                 align-items: center;
-                gap: 0.4rem;
-                margin-bottom: 0.15rem;
+                gap: 0.35rem;
+                margin-bottom: 0.1rem;
             }
             
             .goal-card-icon {
-                width: 22px;
-                height: 22px;
-                border-radius: 0.375rem;
+                width: 20px;
+                height: 20px;
+                border-radius: 0.3rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.8rem;
+                font-size: 0.75rem;
                 flex-shrink: 0;
             }
             
@@ -292,14 +327,14 @@ class GoalsStep(BaseStep):
             .goal-card-title {
                 font-weight: 600;
                 color: #1f2937;
-                font-size: 0.95rem;
+                font-size: 0.9rem;
             }
             
             .goal-card-description {
-                font-size: 0.75rem;
+                font-size: 0.72rem;
                 color: #6b7280;
-                line-height: 1.3;
-                padding-left: 1.6rem;
+                line-height: 1.2;
+                padding-left: 1.5rem;
             }
             
             /* Hide the default radio buttons */
@@ -394,7 +429,7 @@ class GoalsStep(BaseStep):
             placeholder=(
                 "What do you want to understand or be able to do after this task?"
             ),
-            height=100,
+            height=70,
         )
 
         # -------- Save button --------
@@ -487,7 +522,7 @@ class GoalsStep(BaseStep):
         user_msg = st.text_area(
             "Describe what you want to achieve, and the assistant will suggest a clearer mastery goal.",
             key="goal_ai_input",
-            height=100,
+            height=70,
         )
         if (
             st.button("✨ Improve my goal", key="goal_ai_button")
@@ -502,4 +537,5 @@ class GoalsStep(BaseStep):
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
+
 
