@@ -91,7 +91,7 @@ def inject_custom_css() -> None:
             color: var(--color-text-secondary);
             gap: 0.25rem;
             margin-right: 0.35rem;
-            background: #ffffff;
+            background: #bad9f5;
         }
 
         .module-panel {
