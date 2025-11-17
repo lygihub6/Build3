@@ -10,8 +10,9 @@ provides feedback on their breakdown and may suggest improvements.
 
 from __future__ import annotations
 
-import streamlit as st
 from typing import Any, Dict
+
+import streamlit as st
 
 from state import update_current_session
 from services.ai import call_gemini_for_module
@@ -31,12 +32,15 @@ class TaskAnalysisStep(BaseStep):
         if not session.get("task_name"):
             st.info("Set a task and goal in **Goal Setting** first, then come back here.")
             return
+
         # Display current task context for reference
         st.markdown(
             f"**Current task:** {session['task_name']}  \n"
             f"**Goal type:** {session.get('goal_type', 'mastery').title()}  ｜  "
             f"**Task type:** {session.get('task_type', 'not specified')}"
         )
+
+        # ---------------- Editable fields ----------------
         # Requirements
         requirements = st.text_area(
             "What are the key requirements or rubric criteria?",
@@ -81,19 +85,62 @@ class TaskAnalysisStep(BaseStep):
             key="task_contingency",
             height=100,
         )
-        # Save button
+
+        # ---------------- Save button ----------------
         if st.button("Save task analysis", key="save_task_analysis"):
-            update_current_session(
-                {
-                    "requirements": requirements.strip(),
-                    "subtasks": subtasks.strip(),
-                    "prior_knowledge": prior_knowledge.strip(),
-                    "knowledge_gaps": knowledge_gaps.strip(),
-                    "anticipated_challenges": challenges.strip(),
-                    "contingency_plan": contingency.strip(),
-                }
-            )
+            payload = {
+                "requirements": requirements.strip(),
+                "subtasks": subtasks.strip(),
+                "prior_knowledge": prior_knowledge.strip(),
+                "knowledge_gaps": knowledge_gaps.strip(),
+                "anticipated_challenges": challenges.strip(),
+                "contingency_plan": contingency.strip(),
+            }
+            update_current_session(payload)
+            # Keep a copy so the summary shows immediately this run
+            st.session_state["last_task_analysis"] = payload
             st.success("Task analysis saved ✅")
+
+        # ---------------- Saved analysis summary card ----------------
+        saved = st.session_state.get("last_task_analysis") or {
+            "requirements": session.get("requirements", ""),
+            "subtasks": session.get("subtasks", ""),
+            "prior_knowledge": session.get("prior_knowledge", ""),
+            "knowledge_gaps": session.get("knowledge_gaps", ""),
+            "anticipated_challenges": session.get("anticipated_challenges", ""),
+            "contingency_plan": session.get("contingency_plan", ""),
+        }
+
+        if any(saved.values()):
+            st.markdown("##### Your saved task analysis")
+            with st.container():
+                if saved.get("requirements"):
+                    st.markdown("**Key requirements / rubric criteria**")
+                    st.markdown(f"> {saved['requirements']}")
+                if saved.get("subtasks"):
+                    st.markdown("**Subtasks**")
+                    lines = [l.strip() for l in saved["subtasks"].splitlines() if l.strip()]
+                    if lines:
+                        for l in lines:
+                            st.markdown(f"- {l}")
+                if saved.get("prior_knowledge") or saved.get("knowledge_gaps"):
+                    cols = st.columns(2)
+                    with cols[0]:
+                        if saved.get("prior_knowledge"):
+                            st.markdown("**What you already know**")
+                            st.markdown(f"> {saved['prior_knowledge']}")
+                    with cols[1]:
+                        if saved.get("knowledge_gaps"):
+                            st.markdown("**What you need to review / learn**")
+                            st.markdown(f"> {saved['knowledge_gaps']}")
+                if saved.get("anticipated_challenges"):
+                    st.markdown("**Anticipated challenges**")
+                    st.markdown(f"> {saved['anticipated_challenges']}")
+                if saved.get("contingency_plan"):
+                    st.markdown("**Plan B (if challenges happen)**")
+                    st.markdown(f"> {saved['contingency_plan']}")
+
+        # ---------------- AI helper ----------------
         st.markdown("---")
         st.markdown("##### Ask AI to check your breakdown")
         msg = st.text_area(
@@ -105,6 +152,7 @@ class TaskAnalysisStep(BaseStep):
             with st.spinner("Analyzing your task..."):
                 reply = call_gemini_for_module(self.id, msg, session)
             st.session_state.setdefault("ai_responses", {})[self.id] = reply
+
         # Show AI reply
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
