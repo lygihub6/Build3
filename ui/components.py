@@ -82,7 +82,7 @@ def inject_custom_css() -> None:
         .pill {
             display: inline-flex;
             align-items: center;
-            font-size: 0.8rem;
+            font-size: 1rem;
             padding: 0.15rem 0.6rem;
             border-radius: 999px;
             border: 1px solid var(--color-border);
