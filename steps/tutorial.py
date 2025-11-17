@@ -24,81 +24,106 @@ class TutorialStep(BaseStep):
     description = "Learn how to use Thrive in Learning effectively."
 
     def render(self, session: Dict[str, Any]) -> None:
-        # Custom CSS for tutorial-specific styling
+        # Custom CSS for tutorial-specific styling (compact version)
         st.markdown(
             """
             <style>
             .tutorial-hero {
                 text-align: center;
-                padding: 2rem 1rem;
+                padding: 1.25rem 0.75rem;
                 background: linear-gradient(135deg, #d0ddfb 0%, #bad9f5 100%);
-                border-radius: 1rem;
-                margin-bottom: 2rem;
+                border-radius: 0.75rem;
+                margin-bottom: 1.25rem;
             }
             .tutorial-hero h1 {
                 color: #1f2933;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.25rem;
+                font-size: 1.75rem;
             }
             .tutorial-hero p {
                 color: #52606d;
-                font-size: 1.1rem;
+                font-size: 0.95rem;
+                margin: 0;
+            }
+            .section-header {
+                font-size: 1.3rem;
+                color: #1f2933;
+                margin-top: 1rem;
+                margin-bottom: 0.75rem;
             }
             .step-card {
                 background: white;
-                border-radius: 0.75rem;
-                padding: 1.5rem;
-                margin-bottom: 1rem;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-                border-left: 4px solid #f5aa07;
+                border-radius: 0.5rem;
+                padding: 0.875rem;
+                margin-bottom: 0.625rem;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+                border-left: 3px solid #f5aa07;
             }
             .step-card h4 {
                 color: #f5aa07;
-                margin-bottom: 0.5rem;
+                margin: 0 0 0.375rem 0;
+                font-size: 0.95rem;
+            }
+            .step-card p {
+                margin: 0.25rem 0;
+                font-size: 0.9rem;
+                line-height: 1.4;
+            }
+            .step-card ul {
+                margin: 0.375rem 0 0 1.25rem;
+                padding: 0;
+            }
+            .step-card li {
+                font-size: 0.9rem;
+                margin-bottom: 0.25rem;
             }
             .feature-box {
                 background: white;
-                border-radius: 0.75rem;
-                padding: 1.25rem;
+                border-radius: 0.5rem;
+                padding: 0.875rem;
                 height: 100%;
-                box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+                box-shadow: 0 1px 3px rgba(0,0,0,0.08);
                 border-top: 3px solid #f5aa07;
             }
             .feature-box h3 {
                 color: #1f2933;
-                margin-bottom: 0.75rem;
-                font-size: 1.1rem;
+                margin: 0 0 0.5rem 0;
+                font-size: 1rem;
             }
             .feature-box p {
                 color: #52606d;
-                line-height: 1.6;
+                line-height: 1.4;
+                font-size: 0.9rem;
+                margin: 0;
             }
             .tip-box {
                 background: #f2f5ff;
-                border-radius: 0.75rem;
-                padding: 1.25rem;
-                margin-bottom: 1rem;
-                border-left: 4px solid #b5aeaf;
+                border-radius: 0.5rem;
+                padding: 0.75rem;
+                margin-bottom: 0.625rem;
+                border-left: 3px solid #b5aeaf;
             }
             .tip-box h4 {
                 color: #1f2933;
-                margin-bottom: 0.5rem;
-                font-size: 1rem;
+                margin: 0 0 0.375rem 0;
+                font-size: 0.95rem;
             }
             .tip-box p {
                 color: #52606d;
                 margin: 0;
-                line-height: 1.5;
+                line-height: 1.4;
+                font-size: 0.9rem;
             }
             .cta-box {
                 background: linear-gradient(135deg, #f5aa07 0%, #f5c547 100%);
-                border-radius: 0.75rem;
-                padding: 1.5rem;
+                border-radius: 0.5rem;
+                padding: 0.875rem;
                 text-align: center;
-                margin-top: 2rem;
+                margin-top: 1rem;
             }
             .cta-box p {
                 color: white;
-                font-size: 1.1rem;
+                font-size: 0.95rem;
                 font-weight: 600;
                 margin: 0;
             }
@@ -119,8 +144,7 @@ class TutorialStep(BaseStep):
         )
         
         # Quick Start Section
-        st.markdown("## 🚀 Quick Start")
-        st.markdown("Follow these four steps to get the most out of Thrive in Learning:")
+        st.markdown('<h2 class="section-header">🚀 Quick Start</h2>', unsafe_allow_html=True)
         
         # Step 1
         st.markdown(
@@ -182,10 +206,8 @@ class TutorialStep(BaseStep):
             unsafe_allow_html=True,
         )
         
-        st.markdown("<br>", unsafe_allow_html=True)
-        
         # Main Areas Section
-        st.markdown("## 🧭 Main Areas of the App")
+        st.markdown('<h2 class="section-header">🧭 Main Areas of the App</h2>', unsafe_allow_html=True)
         
         col1, col2, col3 = st.columns(3)
         
@@ -225,10 +247,8 @@ class TutorialStep(BaseStep):
                 unsafe_allow_html=True,
             )
         
-        st.markdown("<br><br>", unsafe_allow_html=True)
-        
         # Tips Section
-        st.markdown("## 💡 Tips for Thriving in Learning")
+        st.markdown('<h2 class="section-header">💡 Tips for Thriving in Learning</h2>', unsafe_allow_html=True)
         
         tips_col1, tips_col2 = st.columns(2)
         
@@ -271,7 +291,7 @@ class TutorialStep(BaseStep):
         st.markdown(
             """
             <div class="cta-box">
-                <p>✨ Ready to start? Head to the <strong>Goal Setting</strong> module on the left to begin your learning journey! 🌱</p>
+                <p>✨ Ready to start? Head to <strong>Goal Setting</strong> to begin your learning journey! 🌱</p>
             </div>
             """,
             unsafe_allow_html=True,
