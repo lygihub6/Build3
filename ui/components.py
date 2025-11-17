@@ -57,9 +57,6 @@ def inject_custom_css() -> None:
       padding-left: 0rem;
       padding-right: 0rem;
     }
-"""
-st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
-
         :root {
             --color-primary: #2563eb;
             --color-primary-dark: #1e40af;
