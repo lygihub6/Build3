@@ -12,6 +12,7 @@ modify the look and feel without touching the underlying logic.
 from __future__ import annotations
 
 import os
+import time
 from typing import Optional
 
 import streamlit as st
@@ -38,10 +39,7 @@ def inject_custom_css() -> None:
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
     else:
-        # Use a fallback style based on the provided mockup. In addition to the
-        # original variables and component styles, remove Streamlit's default
-        # side margins and width constraints so the app can occupy the full
-        # browser width.
+        # Fallback CSS (trimmed comment)
         css = """
         :root {
             --color-primary: #aac2f2;
@@ -90,20 +88,15 @@ def inject_custom_css() -> None:
             box-shadow: var(--shadow-md);
         }
 
-        /* Remove Streamlit's default side padding and width constraints for full-width layout */
         html, body {
             margin: 0 !important;
             padding: 0 !important;
         }
-        
-        /* Target Streamlit's main container elements */
         .main, .main > div {
             padding-left: 0 !important;
             padding-right: 0 !important;
             padding-top: 0 !important;
         }
-        
-        /* Remove padding from the block container */
         .block-container {
             padding-left: 1rem !important;
             padding-right: 1rem !important;
@@ -111,20 +104,14 @@ def inject_custom_css() -> None:
             padding-bottom: 0 !important;
             max-width: none !important;
         }
-        
-        /* Ensure the app view container takes full width */
         [data-testid="stAppViewContainer"] {
             padding: 0 !important;
         }
-        
-        /* Remove any default Streamlit padding from the main content area */
         section[data-testid="stSidebar"] + div,
         section.main > div {
             padding: 0 !important;
             max-width: 100% !important;
         }
-        
-        /* Ensure columns take full width */
         [data-testid="column"] {
             padding-left: 0.5rem !important;
             padding-right: 0.5rem !important;
@@ -159,20 +146,36 @@ def render_header(session: dict) -> None:
         )
 
 
+def _safe_rerun() -> None:
+    """Call the correct rerun method for the current Streamlit version."""
+    try:
+        st.rerun()
+    except AttributeError:  # older versions
+        st.experimental_rerun()
+
+
 def render_session_toolbar() -> None:
     """Render the toolbar with actions to save, create, and manage sessions."""
     col1, col2, col3 = st.columns([1, 1, 1])
+
     with col1:
         if st.button("💾 Save session", use_container_width=True):
             save_current_session()
+
     with col2:
         if st.button("➕ New session", use_container_width=True):
             create_new_session(default_demo=False)
             # Clear cached AI responses when starting a new session
             st.session_state.get("ai_responses", {}).clear()
+
+            # Reset timer state for a brand-new session
             st.session_state["timer_running"] = False
-            st.session_state["timer_start_ts"] = None
+            st.session_state["timer_total_seconds"] = 0
+            st.session_state["timer_last_tick"] = time.time()
+
             st.toast("New session created 🌱")
+            _safe_rerun()
+
     with col3:
         # Expander for listing and managing existing sessions
         with st.expander("📂 Sessions", expanded=False):
@@ -183,7 +186,9 @@ def render_session_toolbar() -> None:
                 current_sid = st.session_state.get("current_session_id")
                 # Sort sessions by most recent update
                 sorted_items = sorted(
-                    sessions.items(), key=lambda item: item[1].get("updated_at", 0), reverse=True
+                    sessions.items(),
+                    key=lambda item: item[1].get("updated_at", 0),
+                    reverse=True,
                 )
                 for sid, sess in sorted_items:
                     label = sess.get("task_name") or sess.get("name") or "Untitled"
@@ -192,15 +197,22 @@ def render_session_toolbar() -> None:
                     cols[0].markdown(
                         f"**{label}**" + ("  ✅" if is_current else "")
                     )
+
                     if cols[1].button("Load", key=f"load_{sid}"):
+                        # Switch active session
                         st.session_state["current_session_id"] = sid
-                        # Reset timer state to avoid mixing sessions
+
+                        # Reset timer state to match the loaded session
+                        minutes = float(sess.get("total_time_minutes", 0) or 0)
                         st.session_state["timer_running"] = False
-                        st.session_state["timer_start_ts"] = None
-                        st.experimental_rerun()
+                        st.session_state["timer_total_seconds"] = int(minutes * 60)
+                        st.session_state["timer_last_tick"] = time.time()
+
+                        _safe_rerun()
+
                     if cols[2].button("🗑️", key=f"delete_{sid}"):
                         delete_session(sid)
-                        st.experimental_rerun()
+                        _safe_rerun()
 
 
 def render_module_selector(active_step: Optional[str]) -> str:
@@ -230,3 +242,4 @@ def render_module_selector(active_step: Optional[str]) -> str:
         if is_active:
             st.caption(step.description)
     return selected_id
+
