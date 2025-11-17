@@ -38,30 +38,43 @@ def inject_custom_css() -> None:
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-    else:
-        # Fallback CSS (trimmed comment)
+            
+          else:
+        # Fallback style based on the mockup
         css = """
         :root {
             --color-primary: #aac2f2;
-            --color-primary-dark: #aac2f2;
-            --color-primary-light: #aac2f2;
-            --color-bg-alt: #aac2f2;
+            --color-primary-dark: #8ea9f0;
+            --color-primary-light: #d0ddfb;
+            --color-bg-alt: #f2f5ff;
             --color-surface: #ffffff;
-            --color-border: #aac2f2;
-            --color-text: #aac2f2;
-            --color-text-secondary: #aac2f2;
+            --color-border: #dde3f5;
+            --color-text: #1f2933;
+            --color-text-secondary: #52606d;
             --radius-lg: 0.75rem;
-            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1),
+                          0 2px 4px -1px rgba(0,0,0,0.06);
         }
+
+        /* 🔹 Make the actual app background colored, not just <body> */
         body {
             background: var(--color-bg-alt);
         }
+
+        [data-testid="stAppViewContainer"],
+        .main,
+        .block-container {
+            background: var(--color-bg-alt) !important;
+        }
+
         .app-header {
             background: var(--color-surface);
             border-bottom: 1px solid var(--color-border);
             padding: 0.75rem 1.5rem;
             margin: -1rem -1rem 1rem -1rem;
+            box-shadow: var(--shadow-md);
         }
+
         .app-logo {
             font-weight: 700;
             font-size: 1.25rem;
@@ -70,6 +83,7 @@ def inject_custom_css() -> None:
             align-items: center;
             gap: .5rem;
         }
+
         .pill {
             display: inline-flex;
             align-items: center;
@@ -80,7 +94,9 @@ def inject_custom_css() -> None:
             color: var(--color-text-secondary);
             gap: 0.25rem;
             margin-right: 0.35rem;
+            background: #ffffff;
         }
+
         .module-panel {
             background: var(--color-surface);
             border-radius: 1rem;
@@ -88,15 +104,18 @@ def inject_custom_css() -> None:
             box-shadow: var(--shadow-md);
         }
 
+        /* Layout tweaks you already had */
         html, body {
             margin: 0 !important;
             padding: 0 !important;
         }
+
         .main, .main > div {
             padding-left: 0 !important;
             padding-right: 0 !important;
             padding-top: 0 !important;
         }
+
         .block-container {
             padding-left: 1rem !important;
             padding-right: 1rem !important;
@@ -104,19 +123,13 @@ def inject_custom_css() -> None:
             padding-bottom: 0 !important;
             max-width: none !important;
         }
-        [data-testid="stAppViewContainer"] {
-            padding: 0 !important;
-        }
-        section[data-testid="stSidebar"] + div,
-        section.main > div {
-            padding: 0 !important;
-            max-width: 100% !important;
-        }
+
         [data-testid="column"] {
             padding-left: 0.5rem !important;
             padding-right: 0.5rem !important;
         }
         """
+
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 
