@@ -44,7 +44,7 @@ def inject_custom_css() -> None:
         # browser width.
         css = """
         :root {
-            --color-primary: #2563eb;
+            --color-primary: #aac2f2;
             --color-primary-dark: #1e40af;
             --color-primary-light: #dbeafe;
             --color-bg-alt: #f9fafb;
