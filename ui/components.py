@@ -4,9 +4,7 @@ Reusable UI components for the Thrive in Learning app.
 This module provides helpers for injecting CSS, rendering the header
 bar with session metadata, displaying the session toolbar (save,
 create, load and delete sessions), and rendering the list of SRL
-modules as selectable buttons. Keeping UI code separate from the
-business logic in ``state.py`` and ``services/ai.py`` makes it easy to
-modify the look and feel without touching the underlying logic.
+modules as selectable buttons.
 """
 
 from __future__ import annotations
@@ -31,22 +29,22 @@ def inject_custom_css() -> None:
     contents will be injected. Otherwise a minimal fallback style is
     applied to approximate the design from the provided HTML mockup.
     """
-    css_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mockup.css")
 
+    # Try to load an external mockup.css if it exists
+    css_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mockup.css")
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-    
     else:
         # Fallback style based on the mockup
         css = """
         :root {
-            --color-primary: #f5aa07;
-            --color-primary-dark: #b5aeaf;
-            --color-primary-light: #f7f9fc;
-            --color-bg-alt: #fbe4d0;
-            --color-surface: #80FF0000;
-            --color-border: #dde3f5;
+            --color-primary: #aac2f2;
+            --color-primary-dark: #8ea9f0;
+            --color-primary-light: #d0ddfb;
+            --color-bg-alt: #fef0e4;
+            --color-surface: #ffffff;
+            --color-border: #f2c9a3;
             --color-text: #1f2933;
             --color-text-secondary: #52606d;
             --radius-lg: 0.75rem;
@@ -54,7 +52,6 @@ def inject_custom_css() -> None:
                           0 2px 4px -1px rgba(0,0,0,0.06);
         }
 
-        /* App background */
         body {
             background: var(--color-bg-alt);
         }
@@ -64,18 +61,18 @@ def inject_custom_css() -> None:
         .block-container {
             background: var(--color-bg-alt) !important;
         }
-.app-header {
-    background: var(--color-surface);
-    border-bottom: 1px solid var(--color-border);
-    padding: 0.75rem 1.5rem;
-    /* keep it simple: no negative margins */
-    margin: 0 0 1rem 0!important;
-    box-shadow: var(--shadow-md);
-}
 
-       .app-logo {
+        .app-header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
+            padding: 0.75rem 1.5rem;
+            margin: 0 0 1rem 0;
+            box-shadow: var(--shadow-md);
+        }
+
+        .app-logo {
             font-weight: 700;
-            font-size: 2.25rem;
+            font-size: 1.25rem;
             color: var(--color-primary);
             display: flex;
             align-items: center;
@@ -92,7 +89,7 @@ def inject_custom_css() -> None:
             color: var(--color-text-secondary);
             gap: 0.25rem;
             margin-right: 0.35rem;
-            background: #bad9f5;
+            background: #ffffff;
         }
 
         .module-panel {
@@ -102,7 +99,6 @@ def inject_custom_css() -> None:
             box-shadow: var(--shadow-md);
         }
 
-        /* Layout tweaks */
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -127,43 +123,52 @@ def inject_custom_css() -> None:
             padding-right: 0.5rem !important;
         }
         """
-    # Make sure the header margin is correct even if mockup.css overrides it
-css += """
-.app-header {
-    margin: 0 0 1rem 0 !important;
-}
 
-/* Session toolbar buttons */
-.session-toolbar .stButton > button {
-    background-color: #fde6cf;
-    border-color: #f2c9a3;
-    color: #1f2933;
-    border-radius: 999px;
-    box-shadow: none;
-}
+    # Extra CSS that should always apply (even if mockup.css is loaded)
+    css += """
+    /* Keep our custom header below the toolbar area */
+    .app-header {
+        margin: 0 0 1rem 0 !important;
+    }
 
-.session-toolbar .stButton > button:hover {
-    background-color: #fcd4ad;
-}
+    /* Hide Streamlit's default header bar */
+    header[data-testid="stHeader"] {
+        display: none !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
 
-/* Make the Sessions expander match the buttons */
-.session-toolbar [data-testid="stExpander"] {
-    background-color: #fde6cf;
-    border: 1px solid #f2c9a3;
-    border-radius: 999px;
-}
+    /* Session toolbar buttons (Save / New) */
+    .session-toolbar .stButton > button {
+        background-color: #fde6cf;
+        border: 1px solid #f2c9a3;
+        color: #1f2933;
+        border-radius: 999px;
+        box-shadow: none;
+    }
 
-/* Style the clickable header area of the expander */
-.session-toolbar [data-testid="stExpander"] summary {
-    background-color: transparent;
-    border-radius: 999px;
-}
+    .session-toolbar .stButton > button:hover {
+        background-color: #fcd4ad;
+    }
 
-/* Optional: hover effect for Sessions */
-.session-toolbar [data-testid="stExpander"]:hover {
-    background-color: #fcd4ad;
-}
-"""
+    /* Make the Sessions expander match the buttons */
+    .session-toolbar [data-testid="stExpander"] {
+        background-color: #fde6cf;
+        border: 1px solid #f2c9a3;
+        border-radius: 999px;
+    }
+
+    .session-toolbar [data-testid="stExpander"] summary {
+        background-color: transparent;
+        border-radius: 999px;
+    }
+
+    .session-toolbar [data-testid="stExpander"]:hover {
+        background-color: #fcd4ad;
+    }
+    """
+
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 
@@ -172,6 +177,7 @@ def render_header(session: dict) -> None:
     task_name = session.get("task_name") or session.get("name") or "New session"
     goal_type = session.get("goal_type", "mastery").title()
     time_minutes = session.get("total_time_minutes", 0)
+
     with st.container():
         st.markdown(
             f"""
@@ -194,17 +200,22 @@ def render_header(session: dict) -> None:
 
 
 def _safe_rerun() -> None:
-    """Call the correct rerun method for the current Streamlit version."""
+    """Safely trigger a rerun without crashing if not supported."""
     try:
-        st.rerun()
-    except AttributeError:  # older versions
         st.experimental_rerun()
+    except Exception:
+        # Older/newer Streamlit versions may not support experimental_rerun
+        pass
+
 
 def render_session_toolbar() -> None:
     """Render the toolbar with actions to save, create, and manage sessions."""
+
+    # Wrapper so we can style this row separately
     st.markdown('<div class="session-toolbar">', unsafe_allow_html=True)
 
     col1, col2, col3 = st.columns([1, 1, 1])
+
     with col1:
         if st.button("💾 Save session", use_container_width=True):
             save_current_session()
@@ -212,26 +223,21 @@ def render_session_toolbar() -> None:
     with col2:
         if st.button("➕ New session", use_container_width=True):
             create_new_session(default_demo=False)
+
             # Clear cached AI responses when starting a new session
             st.session_state.get("ai_responses", {}).clear()
-
-            # Reset timer state for a brand-new session
             st.session_state["timer_running"] = False
             st.session_state["timer_total_seconds"] = 0
             st.session_state["timer_last_tick"] = time.time()
-
             st.toast("New session created 🌱")
-            _safe_rerun()
 
     with col3:
-        # Expander for listing and managing existing sessions
         with st.expander("📂 Sessions", expanded=False):
             sessions = st.session_state.get("sessions", {})
             if not sessions:
                 st.caption("No saved sessions yet.")
             else:
                 current_sid = st.session_state.get("current_session_id")
-                # Sort sessions by most recent update
                 sorted_items = sorted(
                     sessions.items(),
                     key=lambda item: item[1].get("updated_at", 0),
@@ -240,21 +246,18 @@ def render_session_toolbar() -> None:
                 for sid, sess in sorted_items:
                     label = sess.get("task_name") or sess.get("name") or "Untitled"
                     is_current = sid == current_sid
+
                     cols = st.columns([4, 1, 1])
                     cols[0].markdown(
                         f"**{label}**" + ("  ✅" if is_current else "")
                     )
 
                     if cols[1].button("Load", key=f"load_{sid}"):
-                        # Switch active session
                         st.session_state["current_session_id"] = sid
-
-                        # Reset timer state to match the loaded session
                         minutes = float(sess.get("total_time_minutes", 0) or 0)
                         st.session_state["timer_running"] = False
                         st.session_state["timer_total_seconds"] = int(minutes * 60)
                         st.session_state["timer_last_tick"] = time.time()
-
                         _safe_rerun()
 
                     if cols[2].button("🗑️", key=f"delete_{sid}"):
@@ -262,7 +265,8 @@ def render_session_toolbar() -> None:
                         _safe_rerun()
 
     st.markdown("</div>", unsafe_allow_html=True)
-    
+
+
 def render_module_selector(active_step: Optional[str]) -> str:
     """Render the list of SRL modules and return the selected module ID.
 
@@ -270,10 +274,10 @@ def render_module_selector(active_step: Optional[str]) -> str:
     module is displayed as a button with an optional description when
     active. Buttons are created in the order defined by ``steps.STEPS``.
     """
-    from steps import STEPS
+    from steps import STEPS  # lazy import to avoid circular dependency
 
-    # Heading is now handled in app.py, so we don't print it here
     selected_id = active_step or (STEPS[0].id if STEPS else None)
+
     for step in STEPS:
         is_active = step.id == selected_id
         label = f"{step.emoji}  {step.label}"
@@ -282,6 +286,7 @@ def render_module_selector(active_step: Optional[str]) -> str:
             selected_id = step.id
         if is_active:
             st.caption(step.description)
+
     return selected_id
 
 
