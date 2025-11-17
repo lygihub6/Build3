@@ -82,7 +82,7 @@ def inject_custom_css() -> None:
         .pill {
             display: inline-flex;
             align-items: center;
-            font-size: 1rem;
+            font-size: 1.5rem;
             padding: 0.15rem 0.6rem;
             border-radius: 999px;
             border: 1px solid var(--color-border);
@@ -95,7 +95,7 @@ def inject_custom_css() -> None:
         .module-panel {
             background: var(--color-surface);
             border-radius: 1rem;
-            padding: 1.5rem;
+            padding: 2.5rem;
             box-shadow: var(--shadow-md);
         }
 
