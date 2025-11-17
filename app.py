@@ -37,14 +37,12 @@ from ui.components import (
 )
 from steps import STEPS, get_step_by_id
 
-
-def main() -> None:
-    """Main entrypoint for the Streamlit app.
-
-    The Streamlit page configuration is set here to use the wide layout.
-    """
-    # Configure Streamlit's page to use a wide layout and set the title/icon.
-    st.set_page_config(page_title="Thrive in Learning", page_icon="🌱", layout="wide")
+def main():
+    st.set_page_config(
+        page_title="Thrive in Learning",
+        page_icon="🌱",
+        layout="wide",
+    )
 
     # Ensure session and internal state are initialized
     init_state()
