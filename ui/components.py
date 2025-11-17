@@ -94,7 +94,7 @@ def inject_custom_css() -> None:
 
         .module-panel {
             background: var(--color-surface);
-            border-radius: 0.5rem;
+            border-radius: 0rem;
             padding: 0.5rem;
             box-shadow: var(--shadow-md);
         }
@@ -127,8 +127,8 @@ def inject_custom_css() -> None:
 .module-list .stButton > button {
     font-size: 1.5rem;        /* increase text size */
     font-weight: 600;       /* make it a bit bolder */
-    padding-top: 0.55rem;   /* keep vertical rhythm nice */
-    padding-bottom: 0.55rem;
+    padding-top: 1.5rem;   /* keep vertical rhythm nice */
+    padding-bottom: 1.5rem;
 }  
         """
 
