@@ -219,28 +219,6 @@ label, .stTextInput label, .stTextArea label {
     .session-toolbar [data-testid="stExpander"]:hover {
         background-color: #fcd4ad;
     }
-    
-    /* Module selector hover effect to show descriptions */
-    .module-item {
-        position: relative;
-        margin-bottom: 0.5rem;
-    }
-    
-    .module-description {
-        font-size: 0.85rem;
-        color: #52606d;
-        padding: 0.5rem 1rem;
-        background: #f8f9fa;
-        border-left: 3px solid #f59127;
-        margin-top: 0.25rem;
-        border-radius: 0.25rem;
-        line-height: 1.4;
-    }
-    
-    /* Show description on hover */
-    .module-item:hover .module-description {
-        display: block !important;
-    }
     """
 
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
@@ -341,13 +319,16 @@ def render_session_toolbar() -> None:
     st.markdown("</div>", unsafe_allow_html=True)
 
 
+from typing import Optional
+import streamlit as st
+
+
 def render_module_selector(active_step: Optional[str]) -> str:
     """Render the list of SRL modules and return the selected module ID.
 
     The selection is stored in ``st.session_state['active_step']``. Each
-    module is displayed as a button with a description that shows on
-    hover or when selected. Buttons are created in the order defined 
-    by ``steps.STEPS``.
+    module is displayed as a button with an optional description when
+    active. Buttons are created in the order defined by ``steps.STEPS``.
 
     Args:
         active_step: the identifier of the currently selected module.
@@ -358,47 +339,25 @@ def render_module_selector(active_step: Optional[str]) -> str:
     # Import steps lazily to avoid circular imports at module load time
     from steps import STEPS
 
-    # Get the current active step from session state
-    if "active_step" not in st.session_state:
-        st.session_state["active_step"] = active_step or (STEPS[0].id if STEPS else None)
-    
-    selected_id = st.session_state["active_step"]
-
-
     # Wrap all module buttons in a container so we can style them via CSS
     st.markdown('<div class="module-list">', unsafe_allow_html=True)
 
+    selected_id = active_step or (STEPS[0].id if STEPS else None)
     for step in STEPS:
         is_active = step.id == selected_id
-        
-        # Start module item container
-        st.markdown('<div class="module-item">', unsafe_allow_html=True)
-        
         label = f"{step.emoji}  {step.label}"
         button_label = f"**{label}**" if is_active else label
-        
-        # When button is clicked, update state immediately
         if st.button(
             button_label,
             key=f"module_{step.id}",
             use_container_width=True,
         ):
-            st.session_state["active_step"] = step.id
             selected_id = step.id
-          # Wrap all module buttons in a container so we can style them via CSS
-    
-        # Always render description, but control visibility with CSS for hover
-        # Show description if active OR always visible for hover effect
-        description_style = "" if is_active else "display: none;"
-        st.markdown(
-            f'<div class="module-description" style="{description_style}">{step.description}</div>',
-            unsafe_allow_html=True
-        )
-        
-        # End module item container
-        st.markdown('</div>', unsafe_allow_html=True)
+        if is_active:
+            st.caption(step.description)
 
     st.markdown("</div>", unsafe_allow_html=True)
 
     return selected_id
+
 
