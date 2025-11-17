@@ -85,80 +85,95 @@ class GoalsStep(BaseStep):
             )
 
         # Goal type and description section
+        st.markdown(
+            """
+            <style>
+            /* Make Your Goal section header more compact */
+            h3 {
+                margin-top: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Make saved goal section more compact */
+            h5 {
+                margin-top: 1rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
         st.markdown("### Your Goal")
         
         # Card-based goal type selector
         st.markdown(
             """
             <style>
-            /* Card-based goal selector */
+            /* Card-based goal selector - COMPACT VERSION */
             .goal-type-cards-container {
-                margin-bottom: 1.5rem;
-                margin-top: 1rem;
+                margin-bottom: 1rem;
+                margin-top: 0.5rem;
             }
             
             .goal-type-cards-label {
                 display: block;
                 font-weight: 600;
                 color: #1f2937;
-                margin-bottom: 1rem;
-                font-size: 1rem;
+                margin-bottom: 0.5rem;
+                font-size: 0.9rem;
             }
             
             .goal-type-cards {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
             }
             
             .goal-card {
-                padding: 1.25rem;
+                padding: 0.75rem 1rem;
                 border: 2px solid #e5e7eb;
-                border-radius: 0.75rem;
+                border-radius: 0.5rem;
                 cursor: pointer;
                 transition: all 0.2s ease;
                 background: white;
                 position: relative;
-                min-height: 100px;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
             }
             
             .goal-card:hover {
                 border-color: #9ca3af;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-                transform: translateY(-2px);
+                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
             }
             
             .goal-card.selected {
                 border-color: #8b5cf6;
                 background: #f5f3ff;
-                box-shadow: 0 4px 12px rgba(139, 92, 246, 0.2);
+                box-shadow: 0 2px 6px rgba(139, 92, 246, 0.15);
             }
             
             .goal-card.performance.selected {
                 border-color: #ec4899;
                 background: #fdf2f8;
-                box-shadow: 0 4px 12px rgba(236, 72, 153, 0.2);
+                box-shadow: 0 2px 6px rgba(236, 72, 153, 0.15);
             }
             
             .goal-card-header {
                 display: flex;
                 align-items: center;
-                gap: 0.75rem;
-                margin-bottom: 0.5rem;
+                gap: 0.5rem;
+                margin-bottom: 0.25rem;
             }
             
             .goal-card-icon {
-                width: 28px;
-                height: 28px;
-                border-radius: 0.5rem;
+                width: 24px;
+                height: 24px;
+                border-radius: 0.375rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 1rem;
+                font-size: 0.875rem;
                 flex-shrink: 0;
             }
             
@@ -173,14 +188,14 @@ class GoalsStep(BaseStep):
             .goal-card-title {
                 font-weight: 600;
                 color: #1f2937;
-                font-size: 1.125rem;
+                font-size: 1rem;
             }
             
             .goal-card-description {
-                font-size: 0.875rem;
+                font-size: 0.8rem;
                 color: #6b7280;
-                line-height: 1.5;
-                padding-left: 2.5rem;
+                line-height: 1.3;
+                padding-left: 1.75rem;
             }
             
             /* Hide the default radio buttons */
@@ -275,7 +290,7 @@ class GoalsStep(BaseStep):
             placeholder=(
                 "What do you want to understand or be able to do after this task?"
             ),
-            height=120,
+            height=100,
         )
 
         # -------- Save button --------
@@ -383,4 +398,3 @@ class GoalsStep(BaseStep):
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
-
