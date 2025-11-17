@@ -55,37 +55,40 @@ class TutorialStep(BaseStep):
                 gap: 0.5rem;
             }
             
-            /* Step cards - narrower and taller */
+            /* Step cards - narrower and taller, stacked vertically */
             .step-card {
                 background: white;
                 border-radius: 0.5rem;
-                padding: 1rem;
+                padding: 1.25rem;
                 margin-bottom: 0.75rem;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.08);
                 border-left: 3px solid #f5aa07;
-                min-height: 180px;
+                min-height: 240px;
                 display: flex;
                 flex-direction: column;
+                max-width: 650px;
+                margin-left: auto;
+                margin-right: auto;
             }
             .step-card h4 {
                 color: #f5aa07;
-                margin: 0 0 0.5rem 0;
-                font-size: 0.95rem;
+                margin: 0 0 0.625rem 0;
+                font-size: 1rem;
                 font-weight: 600;
             }
             .step-card p {
-                margin: 0.25rem 0;
+                margin: 0.3rem 0;
                 font-size: 0.9rem;
                 line-height: 1.5;
             }
             .step-card ul {
-                margin: 0.5rem 0 0 1.25rem;
+                margin: 0.6rem 0 0 1.25rem;
                 padding: 0;
                 flex-grow: 1;
             }
             .step-card li {
                 font-size: 0.9rem;
-                margin-bottom: 0.375rem;
+                margin-bottom: 0.4rem;
                 line-height: 1.4;
             }
             
@@ -173,73 +176,65 @@ class TutorialStep(BaseStep):
             unsafe_allow_html=True,
         )
         
-        # Quick Start Section with 2x2 grid layout
+        # Quick Start Section - now vertically stacked
         st.markdown('<h2 class="section-header">🚀 Quick Start</h2>', unsafe_allow_html=True)
         
-        # Create 2x2 grid for step cards
-        row1_col1, row1_col2 = st.columns(2)
+        # Single column layout for step cards
+        st.markdown(
+            """
+            <div class="step-card">
+                <h4>1️⃣ Set your goal</h4>
+                <p>Tell Thrive in Learning what you're working on (homework, project, exam prep, etc.).</p>
+                <p><strong>Example:</strong> <em>"Finish my chemistry worksheet on atoms."</em></p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         
-        with row1_col1:
-            st.markdown(
-                """
-                <div class="step-card">
-                    <h4>1️⃣ Set your goal</h4>
-                    <p>Tell Thrive in Learning what you're working on (homework, project, exam prep, etc.).</p>
-                    <p><strong>Example:</strong> <em>"Finish my chemistry worksheet on atoms."</em></p>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+        st.markdown(
+            """
+            <div class="step-card">
+                <h4>2️⃣ Plan your strategy</h4>
+                <p>Break your goal into smaller steps. The app can help you:</p>
+                <ul>
+                    <li>Decide where to start</li>
+                    <li>Estimate how long each step might take</li>
+                    <li>Choose strategies (review notes, practice problems, teach-back, etc.)</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         
-        with row1_col2:
-            st.markdown(
-                """
-                <div class="step-card">
-                    <h4>2️⃣ Plan your strategy</h4>
-                    <p>Break your goal into smaller steps. The app can help you:</p>
-                    <ul>
-                        <li>Decide where to start</li>
-                        <li>Estimate how long each step might take</li>
-                        <li>Choose strategies (review notes, practice problems, teach-back, etc.)</li>
-                    </ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+        st.markdown(
+            """
+            <div class="step-card">
+                <h4>3️⃣ Work with the app beside you</h4>
+                <p>As you work, use the AI assistant and tools to:</p>
+                <ul>
+                    <li>Ask for hints or explanations</li>
+                    <li>Get feedback on your ideas</li>
+                    <li>Adjust your plan if you get stuck</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         
-        row2_col1, row2_col2 = st.columns(2)
-        
-        with row2_col1:
-            st.markdown(
-                """
-                <div class="step-card">
-                    <h4>3️⃣ Work with the app beside you</h4>
-                    <p>As you work, use the AI assistant and tools to:</p>
-                    <ul>
-                        <li>Ask for hints or explanations</li>
-                        <li>Get feedback on your ideas</li>
-                        <li>Adjust your plan if you get stuck</li>
-                    </ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-        
-        with row2_col2:
-            st.markdown(
-                """
-                <div class="step-card">
-                    <h4>4️⃣ Reflect and improve</h4>
-                    <p>When you finish (or pause):</p>
-                    <ul>
-                        <li>Log what you completed</li>
-                        <li>Notice what worked well</li>
-                        <li>Note what you want to do differently next time</li>
-                    </ul>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+        st.markdown(
+            """
+            <div class="step-card">
+                <h4>4️⃣ Reflect and improve</h4>
+                <p>When you finish (or pause):</p>
+                <ul>
+                    <li>Log what you completed</li>
+                    <li>Notice what worked well</li>
+                    <li>Note what you want to do differently next time</li>
+                </ul>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
         
         # Main Areas Section
         st.markdown('<h2 class="section-header">🧭 Main Areas of the App</h2>', unsafe_allow_html=True)
@@ -331,3 +326,4 @@ class TutorialStep(BaseStep):
             """,
             unsafe_allow_html=True,
         )
+
