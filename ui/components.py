@@ -36,7 +36,7 @@ def inject_custom_css() -> None:
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-
+    
     else:
         # Fallback style based on the mockup
         css = """
@@ -69,11 +69,11 @@ def inject_custom_css() -> None:
     border-bottom: 1px solid var(--color-border);
     padding: 0.75rem 1.5rem;
     /* keep it simple: no negative margins */
-    margin: 0 0 1rem 0;
+    margin: 0 0 1rem 0!important;
     box-shadow: var(--shadow-md);
 }
 
-        .app-logo {
+       .app-logo {
             font-weight: 700;
             font-size: 2.25rem;
             color: var(--color-primary);
