@@ -39,9 +39,9 @@ def inject_custom_css() -> None:
         # Fallback style based on the mockup
         css = """
         :root {
-            --color-primary: #f2bcaa;
+            --color-primary: #f59127;
             --color-primary-dark: #8ea9f0;
-            --color-primary-light: #f59127;
+            --color-primary-light: #f2bcaa;
             --color-bg-alt: #fef0e4;
             --color-surface: #ffffff;
             --color-border: #f2c9a3;
@@ -71,8 +71,8 @@ def inject_custom_css() -> None:
         }
 
         .app-logo {
-            font-weight: 700;
-            font-size: 1.25rem;
+            font-weight: 800;
+            font-size: 2.25rem;
             color: var(--color-primary);
             display: flex;
             align-items: center;
