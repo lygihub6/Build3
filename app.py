@@ -26,7 +26,7 @@ the Gemini API via the helper exposed in ``services/ai.py`` when
 appropriate.
 """
 
-import streamlit as st
+import streamlit as st 
 
 from state import init_state, get_current_session
 from ui.components import (
