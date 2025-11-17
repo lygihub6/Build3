@@ -66,10 +66,11 @@ def main():
     left_col, right_col = st.columns([1, 2], gap="large")
 
     with left_col:
-        st.markdown("#### Learning modules")
-        default_step = st.session_state.get("active_step", "tutorial")
-        active_step_id = render_module_selector(default_step)
-        st.session_state["active_step"] = active_step_id
+    st.markdown("#### Learning modules")
+    default_step = st.session_state.get("active_step", STEPS[0].id)
+    active_step_id = render_module_selector(default_step)
+    st.session_state["active_step"] = active_step_id
+
 
     with right_col:
         # Card-style container for the module content
