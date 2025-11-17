@@ -65,11 +65,33 @@ class TimePlanStep(BaseStep):
         total_seconds = int(st.session_state["timer_total_seconds"])
         time_display = _format_hhmmss(total_seconds)
 
-        # ---------- UI: header + current logged time ----------
-        st.subheader("⏱️ Time Management")
-        st.markdown(
-            f"**Logged study time for this task:** `{time_display}`"
-        )
+      # ---------- UI: header + current logged time ----------
+st.subheader("⏱️ Time Management")
+
+st.markdown(
+    f"""
+    <div style="font-size:1.25rem; font-weight:600; margin:0.25rem 0 1rem 0;">
+      Logged study time for this task:
+      <span style="
+          display:inline-block;
+          margin-left:0.6rem;
+          padding:0.25rem 0.9rem;
+          border-radius:999px;
+          background:#e6ffed;
+          color:#065f46;
+          font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+                       'Courier New', monospace;
+          font-size:1.4rem;
+          letter-spacing:0.08em;
+          box-shadow:0 0 0 1px rgba(16,185,129,0.25);
+        ">
+        {time_display}
+      </span>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
 
         # ---------- Timer controls + planning controls ----------
         col1, col2 = st.columns(2)
