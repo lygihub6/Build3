@@ -127,6 +127,20 @@ def inject_custom_css() -> None:
             padding-right: 0.5rem !important;
         }
         """
+    # Make sure the header margin is correct even if mockup.css overrides it
+    css += """
+    .app-header {
+        margin: 0 0 1rem 0 !important;
+    }
+
+    /* Hide the default Streamlit top header / toolbar */
+    header[data-testid="stHeader"] {
+        display: none !important;
+        height: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    """
 
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
