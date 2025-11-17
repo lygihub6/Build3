@@ -35,20 +35,7 @@ def inject_custom_css() -> None:
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-:root {
-    --font-size-small: 14px;
-    --font-size-base: 16px;
-    --font-size-large: 18px;
-    --font-size-xl: 20px;
-}
-
-body {
-    font-size: var(--font-size-base);
-}
-
-h2 {
-    font-size: var(--font-size-xl);
-}    
+  
     else:
         # Fallback style based on the mockup
         css = """
@@ -65,6 +52,38 @@ h2 {
             --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1),
                           0 2px 4px -1px rgba(0,0,0,0.06);
         }
+/* Global font size adjustments */
+body, .stMarkdown, [data-testid="stMarkdownContainer"] {
+    font-size: 16px;  /* Increase from default 14px */
+}
+
+/* Headings */
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+
+/* Input labels and text */
+label, .stTextInput label, .stTextArea label {
+    font-size: 16px !important;
+}
+
+/* Button text */
+.stButton button {
+    font-size: 16px !important;
+}
+
+/* Radio button text */
+.stRadio label {
+    font-size: 16px !important;
+}
+
+
+
+
+
+
+
 
         body {
             background: var(--color-bg-alt);
