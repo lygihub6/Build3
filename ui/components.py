@@ -44,7 +44,7 @@ def inject_custom_css() -> None:
             --color-primary-dark: #b5aeaf;
             --color-primary-light: #d0ddfb;
             --color-bg-alt: #f2f5ff;
-            --color-surface: #8faaf2;
+            --color-surface: #00FFFFFF;
             --color-border: #dde3f5;
             --color-text: #1f2933;
             --color-text-secondary: #52606d;
