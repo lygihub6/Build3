@@ -30,7 +30,7 @@ from state import (
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-    else:
+else:
         css = """ ...your fallback CSS string (with margin 0 0 1rem 0)... """
 
     # 🔸 Force the header to sit below the toolbar – no negative margins
