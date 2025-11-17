@@ -31,7 +31,7 @@ class TutorialStep(BaseStep):
             .tutorial-hero {
                 text-align: center;
                 padding: 1.25rem 0.75rem;
-                background: linear-gradient(135deg, #d0ddfb 0%, #bad9f5 100%);
+                background: linear-gradient(135deg, #d0ddfb 0%, #f7a97e 100%);
                 border-radius: 0.75rem;
                 margin-bottom: 1.25rem;
             }
