@@ -94,7 +94,7 @@ def inject_custom_css() -> None:
 
         .module-panel {
             background: var(--color-surface);
-            border-radius: 1rem;
+            border-radius: 2rem;
             padding: 2.5rem;
             box-shadow: var(--shadow-md);
         }
