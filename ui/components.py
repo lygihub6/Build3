@@ -121,15 +121,15 @@ def inject_custom_css() -> None:
         [data-testid="column"] {
             padding-left: 0.5rem !important;
             padding-right: 0.5rem !important;
-        }
+        }     
+
 /* Make module buttons (Goal Setting, Task Analysis, Learning Strategies, etc.) larger */
 .module-list .stButton > button {
-    font-size: 1rem;        /* increase text size */
+    font-size: 1.5rem;        /* increase text size */
     font-weight: 600;       /* make it a bit bolder */
     padding-top: 0.55rem;   /* keep vertical rhythm nice */
     padding-bottom: 0.55rem;
-}
-        
+}  
         """
 
     # Extra CSS that should always apply (even if mockup.css is loaded)
