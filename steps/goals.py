@@ -29,166 +29,264 @@ class GoalsStep(BaseStep):
     description = "Define mastery-oriented goals for your current task."
 
     def render(self, session: Dict[str, Any]) -> None:
-        # ULTRA COMPACT styling - minimum spacing everywhere
+        # Custom CSS matching the HTML mockup
         st.markdown(
             """
             <style>
-            /* Ultra compact global spacing */
-            .block-container {
-                padding-top: 0.5rem !important;
-                padding-bottom: 0.5rem !important;
-                padding-left: 1rem !important;
-                padding-right: 1rem !important;
+            /* Module header styling */
+            .module-header {
+                margin-bottom: 1.5rem;
             }
             
-            /* Minimize ALL header spacing */
-            h1, h2, h3, h4, h5, h6 {
-                margin-top: 0.25rem !important;
-                margin-bottom: 0.25rem !important;
-                padding-top: 0 !important;
-                padding-bottom: 0 !important;
-                line-height: 1.2 !important;
+            .module-header h2 {
+                font-size: 1.5rem;
+                font-weight: 700;
+                color: #1f2937;
+                margin-bottom: 0.25rem;
             }
             
-            /* Subheader */
-            .stMarkdown h2 {
-                margin-top: 0 !important;
-                margin-bottom: 0.3rem !important;
+            .module-header-subtitle {
+                font-size: 0.95rem;
+                color: #6b7280;
             }
             
-            /* All markdown elements super tight */
-            .stMarkdown, .stMarkdown p, .stMarkdown div {
-                margin-bottom: 0.3rem !important;
-                margin-top: 0 !important;
+            /* Alert box styling - matching HTML mockup */
+            .alert-info {
+                padding: 1rem 1.25rem;
+                border-radius: 0.5rem;
+                margin-bottom: 1.5rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 1rem;
+                background-color: #dbeafe;
+                color: #1e3a8a;
             }
             
-            /* Info/success/warning boxes minimal */
-            .stAlert {
-                padding: 0.4rem 0.6rem !important;
-                margin-top: 0.3rem !important;
-                margin-bottom: 0.4rem !important;
+            .alert-icon {
+                font-size: 1.25rem;
+                flex-shrink: 0;
             }
             
-            /* Text inputs ultra compact */
-            .stTextInput, .stSelectbox, .stDateInput {
-                margin-top: 0 !important;
-                margin-bottom: 0.3rem !important;
+            .alert-content {
+                flex: 1;
             }
             
-            .stTextInput > label, .stSelectbox > label, .stDateInput > label {
-                margin-bottom: 0.15rem !important;
-                font-size: 0.85rem !important;
-                padding-bottom: 0 !important;
+            .alert-title {
+                font-weight: 600;
+                margin-bottom: 0.25rem;
+                font-size: 0.95rem;
             }
             
-            .stTextInput > div, .stSelectbox > div, .stDateInput > div {
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
+            .alert-message {
+                font-size: 0.875rem;
+                line-height: 1.5;
             }
             
-            .stTextInput input, .stSelectbox select {
-                padding-top: 0.4rem !important;
-                padding-bottom: 0.4rem !important;
-            }
-            
-            /* Text areas ultra compact */
-            .stTextArea {
-                margin-top: 0 !important;
-                margin-bottom: 0.3rem !important;
-            }
-            
-            .stTextArea > label {
-                margin-bottom: 0.15rem !important;
-                font-size: 0.85rem !important;
-            }
-            
-            .stTextArea textarea {
-                min-height: 70px !important;
-            }
-            
-            /* Buttons minimal spacing */
-            .stButton {
-                margin-top: 0.3rem !important;
-                margin-bottom: 0.3rem !important;
-            }
-            
-            .stButton > button {
-                padding: 0.35rem 0.9rem !important;
-                font-size: 0.9rem !important;
-            }
-            
-            /* Columns tight */
-            .row-widget {
-                margin-bottom: 0.3rem !important;
-                gap: 0.5rem !important;
-            }
-            
-            /* All containers minimal margin */
-            .element-container {
-                margin-bottom: 0.15rem !important;
-            }
-            
-            div[data-testid="stVerticalBlock"] > div {
-                gap: 0.3rem !important;
-            }
-            
-            /* Horizontal rules thin */
-            hr {
-                margin-top: 0.5rem !important;
+            /* Form styling */
+            .stTextInput > label,
+            .stTextArea > label,
+            .stSelectbox > label,
+            .stDateInput > label {
+                font-weight: 500 !important;
+                color: #1f2937 !important;
                 margin-bottom: 0.5rem !important;
+                font-size: 0.875rem !important;
             }
             
-            /* Radio buttons compact */
+            .stTextInput > div > div > input,
+            .stTextArea > div > div > textarea,
+            .stSelectbox > div > div > select,
+            .stDateInput > div > div > input {
+                border: 1px solid #e5e7eb !important;
+                border-radius: 0.5rem !important;
+                padding: 1rem !important;
+                font-size: 1rem !important;
+            }
+            
+            .stTextInput > div > div > input:focus,
+            .stTextArea > div > div > textarea:focus,
+            .stSelectbox > div > div > select:focus {
+                border-color: #2563eb !important;
+                box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+            }
+            
+            /* Form hints */
+            .form-hint {
+                font-size: 0.75rem;
+                color: #9ca3af;
+                margin-top: 0.25rem;
+                font-style: italic;
+            }
+            
+            /* Goal type selector - card-based like HTML mockup */
+            .goal-type-selector {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .goal-type-card {
+                padding: 1.25rem;
+                border: 2px solid #e5e7eb;
+                border-radius: 0.75rem;
+                cursor: pointer;
+                transition: all 0.2s;
+                background: white;
+            }
+            
+            .goal-type-card:hover {
+                border-color: #cbd5e1;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            
+            .goal-type-card.selected {
+                border-color: #8b5cf6;
+                background: #ede9fe;
+            }
+            
+            .goal-type-card.performance.selected {
+                border-color: #ec4899;
+                background: #fce7f3;
+            }
+            
+            .goal-type-header {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .goal-type-icon {
+                width: 24px;
+                height: 24px;
+                border-radius: 0.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.875rem;
+            }
+            
+            .goal-type-card.mastery .goal-type-icon {
+                background: #8b5cf6;
+                color: white;
+            }
+            
+            .goal-type-card.performance .goal-type-icon {
+                background: #ec4899;
+                color: white;
+            }
+            
+            .goal-type-title {
+                font-weight: 600;
+                color: #1f2937;
+            }
+            
+            .goal-type-description {
+                font-size: 0.875rem;
+                color: #6b7280;
+                line-height: 1.5;
+            }
+            
+            /* Save button styling */
+            .stButton > button {
+                background-color: #2563eb;
+                color: white;
+                border: none;
+                padding: 0.75rem 2rem;
+                font-size: 1rem;
+                font-weight: 500;
+                border-radius: 0.5rem;
+                transition: all 0.2s;
+            }
+            
+            .stButton > button:hover {
+                background-color: #1e40af;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+            
+            /* Saved goal card */
+            .saved-goal-card {
+                background: #f9fafb;
+                border: 1px solid #e5e7eb;
+                border-radius: 0.5rem;
+                padding: 1.25rem;
+                margin-top: 1.5rem;
+            }
+            
+            .saved-goal-card h5 {
+                color: #1f2937;
+                font-size: 1rem;
+                margin-bottom: 1rem;
+                font-weight: 600;
+            }
+            
+            .saved-goal-card strong {
+                color: #374151;
+            }
+            
+            /* Hide default Streamlit radio buttons */
             .stRadio {
-                margin-bottom: 0.3rem !important;
-                margin-top: 0 !important;
+                display: none !important;
             }
             
-            .stRadio > label {
-                margin-bottom: 0.15rem !important;
-                font-size: 0.85rem !important;
+            /* AI section */
+            .ai-section {
+                margin-top: 2rem;
+                padding-top: 2rem;
+                border-top: 1px solid #e5e7eb;
             }
             
-            .stRadio > div {
-                gap: 0.3rem !important;
+            .ai-section-title {
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: #1f2937;
+                margin-bottom: 0.5rem;
             }
             
-            /* Blockquotes minimal */
-            blockquote {
-                margin: 0.2rem 0 !important;
-                padding: 0.4rem 0.8rem !important;
-            }
-            
-            /* Spinners/status minimal */
-            .stSpinner, .stStatus {
-                margin-top: 0.3rem !important;
-                margin-bottom: 0.3rem !important;
+            .ai-section-description {
+                font-size: 0.875rem;
+                color: #6b7280;
+                margin-bottom: 1rem;
             }
             </style>
             """,
             unsafe_allow_html=True,
         )
         
-        st.subheader("🎯 Goal Setting")
+        # Module header
         st.markdown(
-            "Focus on **mastery goals** – goals about understanding, skills, and growth, not just grades."
+            """
+            <div class="module-header">
+                <h2>🎯 Goal Setting</h2>
+                <p class="module-header-subtitle">Set meaningful goals that drive your learning journey</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
-
-        # Tip about being specific
-        st.info(
-            'Tip: Be specific with your goals. Instead of **"study math,"** '
-            'try **"review 10 practice problems on quadratic equations."**'
-        )
-
-        # Task information section
-        st.markdown("### Task Information")
         
+        # Alert box
+        st.markdown(
+            """
+            <div class="alert-info">
+                <div class="alert-icon">💡</div>
+                <div class="alert-content">
+                    <div class="alert-title">Focus on Mastery Goals</div>
+                    <div class="alert-message">Mastery goals help you focus on understanding and growth rather than just grades. Research shows they lead to deeper learning and greater persistence.</div>
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        # Form fields
         task_name = st.text_input(
             "What task or assignment are you working on?",
             value=session.get("task_name", ""),
             key="goal_task_name",
             placeholder="e.g., Research paper on climate change",
         )
+        st.markdown('<p class="form-hint">Be specific about what you want to accomplish</p>', unsafe_allow_html=True)
 
         col1, col2 = st.columns(2)
         
@@ -218,227 +316,63 @@ class GoalsStep(BaseStep):
 
         with col2:
             deadline_date = st.date_input(
-                "Target completion date (optional)",
+                "Target completion date",
                 key="goal_deadline",
                 value=None,
-                help="You can leave this as default if you're not sure.",
             )
 
-        # Goal type and description section
-        st.markdown(
-            """
-            <style>
-            /* Minimize section headers */
-            h3 {
-                margin-top: 0.25rem !important;
-                margin-bottom: 0.2rem !important;
-            }
-            
-            h5 {
-                margin-top: 0.25rem !important;
-                margin-bottom: 0.2rem !important;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
-        st.markdown("### Your Goal")
-        
-        # Card-based goal type selector
-        st.markdown(
-            """
-            <style>
-            /* Card-based goal selector - ULTRA COMPACT */
-            .goal-type-cards-container {
-                margin-bottom: 0.3rem;
-                margin-top: 0.15rem;
-            }
-            
-            .goal-type-cards-label {
-                display: block;
-                font-weight: 600;
-                color: #1f2937;
-                margin-bottom: 0.3rem;
-                font-size: 0.85rem;
-            }
-            
-            .goal-type-cards {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 0.4rem;
-                margin-bottom: 0.3rem;
-            }
-            
-            .goal-card {
-                padding: 0.5rem 0.7rem;
-                border: 2px solid #e5e7eb;
-                border-radius: 0.4rem;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                background: white;
-                position: relative;
-                display: flex;
-                flex-direction: column;
-            }
-            
-            .goal-card:hover {
-                border-color: #9ca3af;
-                box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-            }
-            
-            .goal-card.selected {
-                border-color: #8b5cf6;
-                background: #f5f3ff;
-                box-shadow: 0 2px 6px rgba(139, 92, 246, 0.15);
-            }
-            
-            .goal-card.performance.selected {
-                border-color: #ec4899;
-                background: #fdf2f8;
-                box-shadow: 0 2px 6px rgba(236, 72, 153, 0.15);
-            }
-            
-            .goal-card-header {
-                display: flex;
-                align-items: center;
-                gap: 0.35rem;
-                margin-bottom: 0.1rem;
-            }
-            
-            .goal-card-icon {
-                width: 20px;
-                height: 20px;
-                border-radius: 0.3rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 0.75rem;
-                flex-shrink: 0;
-            }
-            
-            .goal-card.mastery .goal-card-icon {
-                background: #8b5cf6;
-            }
-            
-            .goal-card.performance .goal-card-icon {
-                background: #ec4899;
-            }
-            
-            .goal-card-title {
-                font-weight: 600;
-                color: #1f2937;
-                font-size: 0.9rem;
-            }
-            
-            .goal-card-description {
-                font-size: 0.72rem;
-                color: #6b7280;
-                line-height: 1.2;
-                padding-left: 1.5rem;
-            }
-            
-            /* Hide the default radio buttons */
-            .stRadio {
-                display: none !important;
-            }
-            </style>
-            """,
-            unsafe_allow_html=True,
-        )
+        # Goal type selector with cards
+        st.markdown('<label class="stTextInput" style="font-weight: 500; color: #1f2937; margin-bottom: 0.5rem; font-size: 0.875rem; display: block; margin-top: 1rem;">What type of goal do you want to set?</label>', unsafe_allow_html=True)
         
         # Hidden radio buttons for state management
         goal_type_radio = st.radio(
-            "Which best matches your main goal for this task?",
-            options=[
-                "mastery (understand deeply)",
-                "performance (get a grade/score)",
-            ],
+            "Goal type (hidden)",
+            options=["mastery", "performance"],
             index=0 if session.get("goal_type", "mastery") == "mastery" else 1,
             key="goal_type_radio",
+            label_visibility="collapsed",
         )
         
-        # Determine selected state
-        current_goal = "mastery" if goal_type_radio.startswith("mastery") else "performance"
-        mastery_selected = "selected" if current_goal == "mastery" else ""
-        performance_selected = "selected" if current_goal == "performance" else ""
-        
         # Visual card selector
+        current_goal_type = session.get("goal_type", "mastery")
+        mastery_selected = "selected" if current_goal_type == "mastery" else ""
+        performance_selected = "selected" if current_goal_type == "performance" else ""
+        
         st.markdown(
             f"""
-            <div class="goal-type-cards-container">
-                <label class="goal-type-cards-label">Which best matches your main goal for this task?</label>
-                <div class="goal-type-cards">
-                    <div class="goal-card mastery {mastery_selected}" id="mastery-card">
-                        <div class="goal-card-header">
-                            <div class="goal-card-icon">🌟</div>
-                            <div class="goal-card-title">Mastery</div>
-                        </div>
-                        <div class="goal-card-description">Understand deeply</div>
+            <div class="goal-type-selector">
+                <div class="goal-type-card mastery {mastery_selected}" onclick="document.querySelectorAll('input[type=radio]')[0].click()">
+                    <div class="goal-type-header">
+                        <div class="goal-type-icon">🌟</div>
+                        <div class="goal-type-title">Mastery Goal</div>
                     </div>
-                    <div class="goal-card performance {performance_selected}" id="performance-card">
-                        <div class="goal-card-header">
-                            <div class="goal-card-icon">🏆</div>
-                            <div class="goal-card-title">Performance</div>
-                        </div>
-                        <div class="goal-card-description">Get a grade/score</div>
+                    <div class="goal-type-description">Focus on understanding and skill development. Example: "Deeply understand the impact of greenhouse gases on climate systems"</div>
+                </div>
+                <div class="goal-type-card performance {performance_selected}" onclick="document.querySelectorAll('input[type=radio]')[1].click()">
+                    <div class="goal-type-header">
+                        <div class="goal-type-icon">🏆</div>
+                        <div class="goal-type-title">Performance Goal</div>
                     </div>
+                    <div class="goal-type-description">Focus on outcomes and results. Example: "Score at least 90% on the assignment"</div>
                 </div>
             </div>
-            <script>
-                // Add click handlers for the goal cards
-                const iframe = window.parent.document.querySelector('iframe[title="streamlit_folium.st_folium"]') || window.frameElement;
-                if (iframe) {{
-                    const parentDoc = iframe.contentDocument || iframe.contentWindow.document;
-                    
-                    const masteryCard = parentDoc.getElementById('mastery-card');
-                    const performanceCard = parentDoc.getElementById('performance-card');
-                    
-                    if (masteryCard) {{
-                        masteryCard.onclick = function() {{
-                            const radios = window.parent.document.querySelectorAll('input[type="radio"]');
-                            for (let i = 0; i < radios.length; i++) {{
-                                if (radios[i].value && radios[i].value.includes('mastery')) {{
-                                    radios[i].click();
-                                    break;
-                                }}
-                            }}
-                        }};
-                    }}
-                    
-                    if (performanceCard) {{
-                        performanceCard.onclick = function() {{
-                            const radios = window.parent.document.querySelectorAll('input[type="radio"]');
-                            for (let i = 0; i < radios.length; i++) {{
-                                if (radios[i].value && radios[i].value.includes('performance')) {{
-                                    radios[i].click();
-                                    break;
-                                }}
-                            }}
-                        }};
-                    }}
-                }}
-            </script>
+            <p class="form-hint">We recommend setting at least one mastery goal to deepen your learning</p>
             """,
             unsafe_allow_html=True,
         )
         
+        # Goal description
         goal_description = st.text_area(
-            "Describe your **mastery goal** in your own words",
+            "Describe your goal in detail",
             value=session.get("goal_description", ""),
             key="goal_description",
-            placeholder=(
-                "What do you want to understand or be able to do after this task?"
-            ),
-            height=70,
+            placeholder="What do you want to learn or achieve? Be specific about the knowledge or skills you want to develop...",
+            height=120,
         )
 
-        # -------- Save button --------
-        if st.button("Save goal", key="save_goal_main"):
-            goal_type_value = (
-                "mastery"
-                if goal_type_radio.startswith("mastery")
-                else "performance"
-            )
+        # Save button
+        if st.button("Save Goal", key="save_goal_main"):
+            goal_type_value = goal_type_radio
 
             # Try to turn date into ISO string if it exists
             if deadline_date:
@@ -449,7 +383,7 @@ class GoalsStep(BaseStep):
             else:
                 deadline_str = ""
 
-            # Unified goal payload (also stored under session["goal"])
+            # Unified goal payload
             goal_payload = {
                 "task_name": task_name.strip(),
                 "task_type": task_type.strip(),
@@ -460,23 +394,19 @@ class GoalsStep(BaseStep):
 
             update_current_session(
                 {
-                    # top-level fields used elsewhere (e.g., header pills)
                     "task_name": goal_payload["task_name"],
                     "task_type": goal_payload["task_type"],
                     "goal_type": goal_type_value,
                     "goal_description": goal_payload["goal_text"],
                     "deadline": goal_payload["deadline"],
-                    # nested goal dict for easy loading/saving
                     "goal": goal_payload,
                 }
             )
 
-            # Keep a local “last saved goal” so it shows immediately this run
             st.session_state["last_saved_goal"] = goal_payload
+            st.success("✅ Goal saved successfully! Next, you can analyze the task or pick strategies.")
 
-            st.success("Goal saved. Next, you can analyze the task or pick strategies.")
-
-        # -------- Show saved goal summary --------
+        # Show saved goal summary
         saved_goal = st.session_state.get("last_saved_goal") or session.get("goal", {})
 
         if saved_goal and (
@@ -484,58 +414,60 @@ class GoalsStep(BaseStep):
             or saved_goal.get("goal_text")
             or saved_goal.get("goal_description")
         ):
-            st.markdown("##### Your saved goal")
-            with st.container():
-                if saved_goal.get("task_name"):
-                    st.markdown(f"**Task:** {saved_goal['task_name']}")
+            st.markdown(
+                '<div class="saved-goal-card"><h5>📋 Your Saved Goal</h5>',
+                unsafe_allow_html=True,
+            )
+            
+            if saved_goal.get("task_name"):
+                st.markdown(f"**Task:** {saved_goal['task_name']}")
 
-                if saved_goal.get("task_type"):
-                    st.markdown(f"**Task type:** {saved_goal['task_type']}")
+            if saved_goal.get("task_type"):
+                st.markdown(f"**Task type:** {saved_goal['task_type']}")
 
-                goal_type_value = (
-                    saved_goal.get("goal_type") or session.get("goal_type")
-                )
-                if goal_type_value:
-                    if goal_type_value == "mastery":
-                        label = "mastery (understand deeply)"
-                    else:
-                        label = "performance (get a grade/score)"
-                    st.markdown(f"**Goal type:** {label}")
+            goal_type_value = saved_goal.get("goal_type") or session.get("goal_type")
+            if goal_type_value:
+                if goal_type_value == "mastery":
+                    label = "🌟 Mastery Goal"
+                else:
+                    label = "🏆 Performance Goal"
+                st.markdown(f"**Goal type:** {label}")
 
-                # Support both new key "goal_text" and older "goal_description"
-                goal_text = saved_goal.get("goal_text") or saved_goal.get(
-                    "goal_description"
-                )
-                if goal_text:
-                    st.markdown("**Mastery goal (in your own words):**")
-                    st.markdown(f"> {goal_text}")
+            goal_text = saved_goal.get("goal_text") or saved_goal.get("goal_description")
+            if goal_text:
+                st.markdown("**Goal description:**")
+                st.markdown(f"> {goal_text}")
 
-                if saved_goal.get("deadline"):
-                    st.markdown(
-                        f"**Target completion date:** {saved_goal['deadline']}"
-                    )
+            if saved_goal.get("deadline"):
+                st.markdown(f"**Target completion date:** {saved_goal['deadline']}")
+            
+            st.markdown('</div>', unsafe_allow_html=True)
 
-        # -------- Divider + AI helper --------
-        st.markdown("---")
-        st.markdown("##### Ask AI to refine your goal")
+        # AI helper section
+        st.markdown(
+            """
+            <div class="ai-section">
+                <div class="ai-section-title">💬 Get AI Assistance</div>
+                <div class="ai-section-description">Describe what you want to achieve, and the assistant will suggest a clearer mastery goal.</div>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
         user_msg = st.text_area(
-            "Describe what you want to achieve, and the assistant will suggest a clearer mastery goal.",
+            "Your message to AI",
             key="goal_ai_input",
-            height=70,
+            height=100,
+            placeholder="E.g., I want to understand climate change better but don't know where to start...",
         )
-        if (
-            st.button("✨ Improve my goal", key="goal_ai_button")
-            and user_msg.strip()
-        ):
+        
+        if st.button("✨ Get AI Suggestions", key="goal_ai_button") and user_msg.strip():
             with st.spinner("Thinking about your goal..."):
                 reply = call_gemini_for_module(self.id, user_msg, session)
-            # Cache and display the response
             st.session_state.setdefault("ai_responses", {})[self.id] = reply
 
-        # Display last AI response if available
+        # Display AI response
         if st.session_state.get("ai_responses", {}).get(self.id):
-            st.markdown("###### AI suggestion")
+            st.markdown("##### 🤖 AI Suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
-
 
