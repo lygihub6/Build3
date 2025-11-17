@@ -350,7 +350,7 @@ def render_module_selector(active_step: Optional[str]) -> str:
         if st.button(
             button_label,
             key=f"module_{step.id}",
-            use_container_width=True,
+            use_container_width=False,
         ):
             selected_id = step.id
         if is_active:
