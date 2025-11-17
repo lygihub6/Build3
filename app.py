@@ -51,26 +51,28 @@ def main():
         layout="wide",
     )
 
-    # 🔹 Initialize app/session state, then grab the current session dict
+    # --- Initialize state + get the current SRL session ---
     init_state()
     session = get_current_session()
 
-    # 🔹 Inject styling – must be called once before any UI is drawn
+    # --- Inject custom CSS once, before drawing the UI ---
     inject_custom_css()
 
-    # 🔹 Render the header and session toolbar
-    render_header(session)
-    render_session_toolbar()
+    # --- Top toolbar + header bar ---
+    render_session_toolbar()   # 💾 Save / ➕ New / 📂 Sessions
+    render_header(session)     # 🌱 logo + task name + goal type + time
 
-    # Build two columns: module selector on the left, content on the right
+    # --- Main layout: modules on the left, active step on the right ---
     left_col, right_col = st.columns([1, 2], gap="large")
+
     with left_col:
-        # Default to tutorial step if not set, otherwise use the current active step
+        st.markdown("#### Learning modules")
         default_step = st.session_state.get("active_step", "tutorial")
         active_step_id = render_module_selector(default_step)
         st.session_state["active_step"] = active_step_id
 
     with right_col:
+        # Card-style container for the module content
         st.markdown('<div class="module-panel">', unsafe_allow_html=True)
         step = get_step_by_id(active_step_id)
         if step:
