@@ -132,6 +132,19 @@ def inject_custom_css() -> None:
     .app-header {
         margin: 0 0 1rem 0 !important;
     }
+    /* Session toolbar buttons */
+.session-toolbar .stButton > button {
+    background-color: #fde6cf;      /* peach fill */
+    border-color: #f2c9a3;
+    color: #1f2933;
+    border-radius: 999px;
+    box-shadow: none;
+}
+
+/* Optional: change hover color a bit darker */
+.session-toolbar .stButton > button:hover {
+    background-color: #fcd4ad;
+}
 
     /* Hide the default Streamlit top header / toolbar */
     header[data-testid="stHeader"] {
@@ -178,11 +191,11 @@ def _safe_rerun() -> None:
     except AttributeError:  # older versions
         st.experimental_rerun()
 
-
 def render_session_toolbar() -> None:
     """Render the toolbar with actions to save, create, and manage sessions."""
-    col1, col2, col3 = st.columns([1, 1, 1])
+    st.markdown('<div class="session-toolbar">', unsafe_allow_html=True)
 
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
         if st.button("💾 Save session", use_container_width=True):
             save_current_session()
@@ -239,7 +252,8 @@ def render_session_toolbar() -> None:
                         delete_session(sid)
                         _safe_rerun()
 
-
+    st.markdown("</div>", unsafe_allow_html=True)
+    
 def render_module_selector(active_step: Optional[str]) -> str:
     """Render the list of SRL modules and return the selected module ID.
 
