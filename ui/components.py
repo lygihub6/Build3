@@ -128,33 +128,42 @@ def inject_custom_css() -> None:
         }
         """
     # Make sure the header margin is correct even if mockup.css overrides it
-    css += """
-    .app-header {
-        margin: 0 0 1rem 0 !important;
-    }
-    /* Session toolbar buttons */
+css += """
+.app-header {
+    margin: 0 0 1rem 0 !important;
+}
+
+/* Session toolbar buttons */
 .session-toolbar .stButton > button {
-    background-color: #fde6cf;      /* peach fill */
+    background-color: #fde6cf;
     border-color: #f2c9a3;
     color: #1f2933;
     border-radius: 999px;
     box-shadow: none;
 }
 
-/* Optional: change hover color a bit darker */
 .session-toolbar .stButton > button:hover {
     background-color: #fcd4ad;
 }
 
-    /* Hide the default Streamlit top header / toolbar */
-    header[data-testid="stHeader"] {
-        display: none !important;
-        height: 0 !important;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    """
+/* Make the Sessions expander match the buttons */
+.session-toolbar [data-testid="stExpander"] {
+    background-color: #fde6cf;
+    border: 1px solid #f2c9a3;
+    border-radius: 999px;
+}
 
+/* Style the clickable header area of the expander */
+.session-toolbar [data-testid="stExpander"] summary {
+    background-color: transparent;
+    border-radius: 999px;
+}
+
+/* Optional: hover effect for Sessions */
+.session-toolbar [data-testid="stExpander"]:hover {
+    background-color: #fcd4ad;
+}
+"""
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
 
 
