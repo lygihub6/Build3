@@ -1,0 +1,71 @@
+"""
+Main entrypoint for the Thrive in Learning Streamlit application.
+
+This script wires together the session state, UI components, and
+individual self‑regulated learning (SRL) steps. It sets up the page,
+loads the system prompt from ``identity.txt``, initializes internal
+state, and delegates rendering to the appropriate module based on the
+current step the student has selected.
+
+The application is designed to be modular and extensible: new steps
+can be added simply by creating a new file in ``steps/`` that defines
+a subclass of ``BaseStep`` and registering it in ``steps/__init__.py``.
+
+The current implementation includes the following steps:
+
+* Goal setting
+* Task analysis
+* Learning strategies
+* Time planning
+* Resources
+* Reflection
+
+Each step is responsible for rendering its own UI elements and calling
+the Gemini API via the helper exposed in ``services/ai.py`` when
+appropriate.
+"""
+
+import streamlit as st
+
+from state import init_state, get_current_session
+from ui.components import (
+    inject_custom_css,
+    render_header,
+    render_session_toolbar,
+    render_module_selector,
+)
+from steps import STEPS, get_step_by_id
+
+
+def main() -> None:
+    """Main entrypoint for the Streamlit app."""
+    # Ensure session and internal state are initialized
+    init_state()
+    session = get_current_session()
+
+    # Inject styling – must be called once before any UI is drawn
+    inject_custom_css()
+
+    # Render the header and session toolbar
+    render_header(session)
+    render_session_toolbar()
+
+    # Build two columns: module selector on the left, content on the right
+    left_col, right_col = st.columns([1, 2], gap="large")
+    with left_col:
+        active_step_id = render_module_selector(st.session_state.get("active_step", STEPS[0].id))
+        st.session_state["active_step"] = active_step_id
+    with right_col:
+        st.markdown('<div class="module-panel">', unsafe_allow_html=True)
+        # Look up the step by id and render it. If nothing is found
+        # (which should not happen), display a fallback message.
+        step = get_step_by_id(active_step_id)
+        if step:
+            step.render(session)
+        else:
+            st.info("Pick a module on the left to begin.")
+        st.markdown("</div>", unsafe_allow_html=True)
+
+
+if __name__ == "__main__":
+    main()
