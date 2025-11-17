@@ -139,6 +139,18 @@ def inject_custom_css() -> None:
         margin: 0 !important;
     }
 
+    /* Learning modules sidebar buttons - increased height to 240px */
+    [data-testid="column"]:first-child .stButton > button {
+        min-height: 240px !important;
+        height: auto;
+        white-space: normal;
+        text-align: left;
+        padding: 1rem;
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+    }
+
     /* Session toolbar buttons (Save / New) */
     .session-toolbar .stButton > button {
         background-color: #fde6cf;
@@ -288,5 +300,6 @@ def render_module_selector(active_step: Optional[str]) -> str:
             st.caption(step.description)
 
     return selected_id
+
 
 
