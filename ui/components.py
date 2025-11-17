@@ -123,12 +123,12 @@ def inject_custom_css() -> None:
             padding-right: 0.5rem !important;
         }     
 
-/* Make module buttons (Goal Setting, Task Analysis, Learning Strategies, etc.) larger */
+/* Make the module buttons text larger */
 .module-list .stButton > button {
-    font-size: 1.5rem;        /* increase text size */
-    font-weight: 600;       /* make it a bit bolder */
-    padding-top: 1.5rem;   /* keep vertical rhythm nice */
-    padding-bottom: 1.5rem;
+    font-size: 1.15rem;      /* try 1.1–1.2rem until it feels right */
+    font-weight: 600;        /* keep them bold-ish */
+    padding-top: 0.6rem;     /* adjust padding so they still look balanced */
+    padding-bottom: 0.6rem;
 }  
         """
 
