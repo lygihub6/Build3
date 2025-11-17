@@ -1,0 +1,34 @@
+"""
+Abstract base class for SRL steps.
+
+Each self‑regulated learning module (step) in the app should inherit
+from ``BaseStep`` and implement the ``render`` method to display its
+UI using Streamlit components. The class attributes ``id``, ``label``,
+``emoji`` and ``description`` should be set by subclasses to define
+how the step appears in the module selector.
+"""
+
+from __future__ import annotations
+
+from abc import ABC, abstractmethod
+from typing import Dict, Any
+
+
+class BaseStep(ABC):
+    """Abstract base class defining the interface for a SRL step."""
+
+    id: str  # internal identifier (e.g. "goal", "task")
+    label: str  # display name (e.g. "Goal Setting")
+    emoji: str  # emoji used in module selector
+    description: str  # one‑sentence description for the sidebar
+
+    @abstractmethod
+    def render(self, session: Dict[str, Any]) -> None:
+        """
+        Render the UI for this step.
+
+        Each subclass must implement this method to draw its specific
+        widgets and handle user interactions. The current session
+        dictionary is passed in for context.
+        """
+        raise NotImplementedError
