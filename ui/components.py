@@ -153,11 +153,11 @@ label, .stTextInput label, .stTextArea label {
 /* Module buttons: make text larger & buttons taller */
 .module-list .stButton > button {
     font-size: 1.5rem;          /* whatever size you like */
-    padding-top: 1.2rem;        /* ↑ increase these to make the button taller */
-    padding-bottom: 1.2rem;
+    padding-top: 5rem;        /* ↑ increase these to make the button taller */
+    padding-bottom: 5rem;
     padding-left: 1.2rem;
     padding-right: 1.2rem;
-    min-height: 3.9rem;         /* optional: guarantees a minimum height */
+    min-height: 6rem;         /* optional: guarantees a minimum height */
     display: flex;
     align-items: center;        /* keep emoji + text vertically centered */
     justify-content: center;
