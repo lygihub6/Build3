@@ -30,16 +30,13 @@ def inject_custom_css() -> None:
     If a file named ``mockup.css`` exists in the project root, its
     contents will be injected. Otherwise a minimal fallback style is
     applied to approximate the design from the provided HTML mockup.
-    This function should be called exactly once before any UI is
-    drawn. It relies on ``st.markdown`` with ``unsafe_allow_html`` to
-    embed a ``<style>`` tag.
     """
     css_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "mockup.css")
+
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
-            
-          else:
+    else:
         # Fallback style based on the mockup
         css = """
         :root {
@@ -56,7 +53,7 @@ def inject_custom_css() -> None:
                           0 2px 4px -1px rgba(0,0,0,0.06);
         }
 
-        /* 🔹 Make the actual app background colored, not just <body> */
+        /* App background */
         body {
             background: var(--color-bg-alt);
         }
@@ -104,7 +101,7 @@ def inject_custom_css() -> None:
             box-shadow: var(--shadow-md);
         }
 
-        /* Layout tweaks you already had */
+        /* Layout tweaks */
         html, body {
             margin: 0 !important;
             padding: 0 !important;
@@ -131,6 +128,7 @@ def inject_custom_css() -> None:
         """
 
     st.markdown(f"<style>{css}</style>", unsafe_allow_html=True)
+
 
 
 def render_header(session: dict) -> None:
