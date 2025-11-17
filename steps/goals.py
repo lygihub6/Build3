@@ -29,6 +29,110 @@ class GoalsStep(BaseStep):
     description = "Define mastery-oriented goals for your current task."
 
     def render(self, session: Dict[str, Any]) -> None:
+        # Global compact styling
+        st.markdown(
+            """
+            <style>
+            /* Global compact spacing */
+            .block-container {
+                padding-top: 1rem !important;
+                padding-bottom: 1rem !important;
+            }
+            
+            /* All headers more compact */
+            h1, h2, h3, h4, h5, h6 {
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.3rem !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+            }
+            
+            /* Subheader specific */
+            .stMarkdown h2 {
+                margin-top: 0 !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Paragraphs and markdown */
+            .stMarkdown p {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Info/warning/success boxes */
+            .stAlert {
+                padding: 0.5rem 0.75rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Text inputs */
+            .stTextInput, .stSelectbox, .stDateInput {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .stTextInput > label, .stSelectbox > label, .stDateInput > label {
+                margin-bottom: 0.25rem !important;
+                font-size: 0.9rem !important;
+            }
+            
+            .stTextInput > div, .stSelectbox > div, .stDateInput > div {
+                margin-bottom: 0 !important;
+            }
+            
+            /* Text areas */
+            .stTextArea {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .stTextArea > label {
+                margin-bottom: 0.25rem !important;
+                font-size: 0.9rem !important;
+            }
+            
+            /* Buttons */
+            .stButton {
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .stButton > button {
+                padding: 0.4rem 1rem !important;
+            }
+            
+            /* Columns */
+            .row-widget {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            /* Containers */
+            .element-container {
+                margin-bottom: 0.25rem !important;
+            }
+            
+            /* Horizontal rules */
+            hr {
+                margin-top: 0.75rem !important;
+                margin-bottom: 0.75rem !important;
+            }
+            
+            /* Radio buttons */
+            .stRadio {
+                margin-bottom: 0.5rem !important;
+            }
+            
+            .stRadio > label {
+                margin-bottom: 0.25rem !important;
+            }
+            
+            /* Blockquotes (used in saved goal display) */
+            blockquote {
+                margin: 0.25rem 0 !important;
+                padding: 0.5rem 1rem !important;
+            }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        
         st.subheader("🎯 Goal Setting")
         st.markdown(
             "Focus on **mastery goals** – goals about understanding, skills, and growth, not just grades."
@@ -90,14 +194,14 @@ class GoalsStep(BaseStep):
             <style>
             /* Make Your Goal section header more compact */
             h3 {
-                margin-top: 1rem !important;
-                margin-bottom: 0.5rem !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.3rem !important;
             }
             
             /* Make saved goal section more compact */
             h5 {
-                margin-top: 1rem !important;
-                margin-bottom: 0.5rem !important;
+                margin-top: 0.5rem !important;
+                margin-bottom: 0.3rem !important;
             }
             </style>
             """,
@@ -109,29 +213,29 @@ class GoalsStep(BaseStep):
         st.markdown(
             """
             <style>
-            /* Card-based goal selector - COMPACT VERSION */
+            /* Card-based goal selector - EXTRA COMPACT VERSION */
             .goal-type-cards-container {
-                margin-bottom: 1rem;
-                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+                margin-top: 0.25rem;
             }
             
             .goal-type-cards-label {
                 display: block;
                 font-weight: 600;
                 color: #1f2937;
-                margin-bottom: 0.5rem;
+                margin-bottom: 0.4rem;
                 font-size: 0.9rem;
             }
             
             .goal-type-cards {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: 0.75rem;
-                margin-bottom: 1rem;
+                gap: 0.5rem;
+                margin-bottom: 0.5rem;
             }
             
             .goal-card {
-                padding: 0.75rem 1rem;
+                padding: 0.6rem 0.8rem;
                 border: 2px solid #e5e7eb;
                 border-radius: 0.5rem;
                 cursor: pointer;
@@ -162,18 +266,18 @@ class GoalsStep(BaseStep):
             .goal-card-header {
                 display: flex;
                 align-items: center;
-                gap: 0.5rem;
-                margin-bottom: 0.25rem;
+                gap: 0.4rem;
+                margin-bottom: 0.15rem;
             }
             
             .goal-card-icon {
-                width: 24px;
-                height: 24px;
+                width: 22px;
+                height: 22px;
                 border-radius: 0.375rem;
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                font-size: 0.875rem;
+                font-size: 0.8rem;
                 flex-shrink: 0;
             }
             
@@ -188,14 +292,14 @@ class GoalsStep(BaseStep):
             .goal-card-title {
                 font-weight: 600;
                 color: #1f2937;
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
             
             .goal-card-description {
-                font-size: 0.8rem;
+                font-size: 0.75rem;
                 color: #6b7280;
                 line-height: 1.3;
-                padding-left: 1.75rem;
+                padding-left: 1.6rem;
             }
             
             /* Hide the default radio buttons */
