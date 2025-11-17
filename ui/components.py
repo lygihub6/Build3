@@ -307,8 +307,6 @@ def render_module_selector(active_step: Optional[str]) -> str:
     # Import steps lazily to avoid circular imports at module load time
     from steps import STEPS
 
-    st.markdown("#### Learning modules")
-
     # Wrap all module buttons in a container so we can style them via CSS
     st.markdown('<div class="module-list">', unsafe_allow_html=True)
 
