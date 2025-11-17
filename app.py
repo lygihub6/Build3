@@ -28,7 +28,7 @@ appropriate.
 
 import streamlit as st
 
-from state import init_state, get_current_session
+from state import get_current_session, load_sessions
 from ui.components import (
     inject_custom_css,
     render_header,
