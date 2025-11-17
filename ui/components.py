@@ -40,7 +40,7 @@ def inject_custom_css() -> None:
         # Fallback style based on the mockup
         css = """
         :root {
-            --color-primary: #aac2f2;
+            --color-primary: #f7dce2;
             --color-primary-dark: #8ea9f0;
             --color-primary-light: #d0ddfb;
             --color-bg-alt: #f2f5ff;
