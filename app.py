@@ -51,10 +51,14 @@ def main():
         layout="wide",
     )
 
-    # Inject styling – must be called once before any UI is drawn
+    # 🔹 Initialize app/session state, then grab the current session dict
+    init_state()
+    session = get_current_session()
+
+    # 🔹 Inject styling – must be called once before any UI is drawn
     inject_custom_css()
 
-    # Render the header and session toolbar
+    # 🔹 Render the header and session toolbar
     render_header(session)
     render_session_toolbar()
 
@@ -62,19 +66,19 @@ def main():
     left_col, right_col = st.columns([1, 2], gap="large")
     with left_col:
         # Default to tutorial step if not set, otherwise use the current active step
-        default_step = st.session_state.get("active_step", STEPS[0].id)
+        default_step = st.session_state.get("active_step", "tutorial")
         active_step_id = render_module_selector(default_step)
         st.session_state["active_step"] = active_step_id
+
     with right_col:
         st.markdown('<div class="module-panel">', unsafe_allow_html=True)
-        # Look up the step by id and render it. If nothing is found
-        # (which should not happen), display a fallback message.
         step = get_step_by_id(active_step_id)
         if step:
             step.render(session)
         else:
             st.info("Pick a module on the left to begin.")
         st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 if __name__ == "__main__":
