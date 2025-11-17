@@ -190,7 +190,7 @@ class GoalsStep(BaseStep):
             
             /* Save button styling */
             .stButton > button {
-                background-color: #2563eb;
+                background-color: #c9eded;
                 color: white;
                 border: none;
                 padding: 0.75rem 2rem;
@@ -455,7 +455,7 @@ class GoalsStep(BaseStep):
         )
 
         user_msg = st.text_area(
-            "Your message to AI",
+            "Ask AI to refine your goal",
             key="goal_ai_input",
             height=100,
             placeholder="E.g., I want to understand climate change better but don't know where to start...",
