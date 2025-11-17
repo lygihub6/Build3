@@ -150,12 +150,17 @@ label, .stTextInput label, .stTextArea label {
             padding-right: 0.5rem !important;
         }     
 
-/* Make the module buttons text larger */
+/* Module buttons: make text larger & buttons taller */
 .module-list .stButton > button {
-    font-size: 1.15rem;      /* try 1.1–1.2rem until it feels right */
-    font-weight: 600;        /* keep them bold-ish */
-    padding-top: 0.6rem;     /* adjust padding so they still look balanced */
-    padding-bottom: 0.6rem;
+    font-size: 1.1rem;          /* whatever size you like */
+    padding-top: 0.9rem;        /* ↑ increase these to make the button taller */
+    padding-bottom: 0.9rem;
+    padding-left: 1.2rem;
+    padding-right: 1.2rem;
+    min-height: 3.2rem;         /* optional: guarantees a minimum height */
+    display: flex;
+    align-items: center;        /* keep emoji + text vertically centered */
+    justify-content: center;
 }  
         """
 
