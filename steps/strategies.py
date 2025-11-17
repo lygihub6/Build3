@@ -32,7 +32,7 @@ DEFAULT_STRATEGIES: List[str] = [
 ]
 
 
-class LearningStrategiesStep(BaseStep):
+class StrategiesStep(BaseStep):
     """Learning strategies SRL step."""
 
     id = "strategies"
@@ -87,11 +87,12 @@ class LearningStrategiesStep(BaseStep):
                     st.info("That strategy is already in your list.")
                 else:
                     custom_strats.append(cleaned)
-                    # Update persistent session data
+                    # Update persistent session data: include the new strategy as selected
+                    updated_selected = selected_now + [cleaned]
                     update_current_session(
                         {
                             "strategies": {
-                                "selected": selected_now + [cleaned],
+                                "selected": updated_selected,
                                 "custom": custom_strats,
                             }
                         }
@@ -99,8 +100,8 @@ class LearningStrategiesStep(BaseStep):
                     st.success("Custom strategy added and selected ✅")
                     # Clear input for the next entry
                     st.session_state["new_strategy_text"] = ""
-                    # Also update the local selections so the UI is consistent
-                    selected_now.append(cleaned)
+                    # Keep local variables in sync for the rest of this run
+                    selected_now = updated_selected
                     all_options.append(cleaned)
 
         # ---- Save the current set of selected strategies ----
@@ -115,7 +116,7 @@ class LearningStrategiesStep(BaseStep):
             )
             st.success("Strategies saved 💡")
 
-        # ---- Optional: show a quick summary of chosen strategies ----
+        # ---- Quick summary of chosen strategies ----
         if selected_now:
             st.markdown("##### Your chosen strategies for this task")
             for s_item in selected_now:
@@ -139,3 +140,4 @@ class LearningStrategiesStep(BaseStep):
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
+
