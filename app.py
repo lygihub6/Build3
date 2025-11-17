@@ -25,7 +25,21 @@ the Gemini API via the helper exposed in ``services/ai.py`` when
 appropriate.
 """
 
+# app.py (near the start of main)
 import streamlit as st
+
+def main():
+    """Main entrypoint for the Streamlit app.
+
+    The Streamlit page configuration is set here to use the wide layout.
+    """
+    # Configure Streamlit's page to use a wide layout and set the title/icon.
+    st.set_page_config(page_title="Thrive in Learning", page_icon="🌱", layout="wide")
+
+    # Initialize session state and render the rest of your app …
+    init_state()
+    session = get_current_session()
+    ...
 
 from state import init_state, get_current_session
 from ui.components import (
