@@ -63,14 +63,14 @@ def inject_custom_css() -> None:
         .block-container {
             background: var(--color-bg-alt) !important;
         }
-
-        .app-header {
-            background: var(--color-surface);
-            border-bottom: 1px solid var(--color-border);
-            padding: 0.75rem 1.5rem;
-            margin: -1rem -1rem 1rem -1rem;
-            box-shadow: var(--shadow-md);
-        }
+.app-header {
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    padding: 0.75rem 1.5rem;
+    /* keep it simple: no negative margins */
+    margin: 0 0 1rem 0;
+    box-shadow: var(--shadow-md);
+}
 
         .app-logo {
             font-weight: 700;
