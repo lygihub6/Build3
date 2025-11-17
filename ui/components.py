@@ -35,6 +35,20 @@ def inject_custom_css() -> None:
     if os.path.exists(css_path):
         with open(css_path, "r", encoding="utf-8") as f:
             css = f.read()
+:root {
+    --font-size-small: 14px;
+    --font-size-base: 16px;
+    --font-size-large: 18px;
+    --font-size-xl: 20px;
+}
+
+body {
+    font-size: var(--font-size-base);
+}
+
+h2 {
+    font-size: var(--font-size-xl);
+}    
     else:
         # Fallback style based on the mockup
         css = """
