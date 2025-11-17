@@ -24,7 +24,7 @@ class TutorialStep(BaseStep):
     description = "Learn how to use Thrive in Learning effectively."
 
     def render(self, session: Dict[str, Any]) -> None:
-        # Custom CSS for tutorial-specific styling (compact version)
+        # Custom CSS for tutorial-specific styling (compact version with improved sizing)
         st.markdown(
             """
             <style>
@@ -50,6 +50,9 @@ class TutorialStep(BaseStep):
                 color: #1f2933;
                 margin-top: 1rem;
                 margin-bottom: 0.75rem;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
             }
             .step-card {
                 background: white;
@@ -77,42 +80,61 @@ class TutorialStep(BaseStep):
                 font-size: 0.9rem;
                 margin-bottom: 0.25rem;
             }
+            
+            /* Feature boxes with fixed heights and proper alignment */
             .feature-box {
                 background: white;
                 border-radius: 0.5rem;
-                padding: 0.875rem;
-                height: 100%;
+                padding: 1rem;
                 box-shadow: 0 1px 3px rgba(0,0,0,0.08);
                 border-top: 3px solid #f5aa07;
+                display: flex;
+                flex-direction: column;
+                min-height: 160px;
             }
             .feature-box h3 {
                 color: #1f2933;
-                margin: 0 0 0.5rem 0;
-                font-size: 1rem;
+                margin: 0 0 0.625rem 0;
+                font-size: 1.05rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
             }
             .feature-box p {
                 color: #52606d;
-                line-height: 1.4;
+                line-height: 1.5;
                 font-size: 0.9rem;
                 margin: 0;
+                flex-grow: 1;
             }
+            
+            /* Tip boxes with consistent sizing */
             .tip-box {
                 background: #f2f5ff;
                 border-radius: 0.5rem;
-                padding: 0.75rem;
-                margin-bottom: 0.625rem;
+                padding: 0.875rem;
+                margin-bottom: 0.75rem;
                 border-left: 3px solid #b5aeaf;
+                min-height: 110px;
+                display: flex;
+                flex-direction: column;
             }
             .tip-box h4 {
                 color: #1f2933;
-                margin: 0 0 0.375rem 0;
+                margin: 0 0 0.5rem 0;
                 font-size: 0.95rem;
+                font-weight: 600;
+                display: flex;
+                align-items: center;
+                gap: 0.375rem;
             }
             .tip-box p {
                 color: #52606d;
                 margin: 0;
-                line-height: 1.4;
+                line-height: 1.5;
                 font-size: 0.9rem;
+                flex-grow: 1;
             }
             .cta-box {
                 background: linear-gradient(135deg, #f5aa07 0%, #f5c547 100%);
