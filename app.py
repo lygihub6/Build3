@@ -47,10 +47,6 @@ def main():
         layout="wide",
     )
 
-    # Ensure session and internal state are initialized
-    init_state()
-    session = get_current_session()
-
     # Inject styling – must be called once before any UI is drawn
     inject_custom_css()
 
