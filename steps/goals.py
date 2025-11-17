@@ -398,3 +398,4 @@ class GoalsStep(BaseStep):
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
+
