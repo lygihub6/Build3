@@ -41,6 +41,12 @@ class StrategiesStep(BaseStep):
     description = "Select and refine how you’ll study for this task."
 
     def render(self, session: Dict[str, Any]) -> None:
+        # -------- Clear the 'new strategy' input on the next run --------
+        if st.session_state.get("clear_new_strategy_input"):
+            if "new_strategy_text" in st.session_state:
+                del st.session_state["new_strategy_text"]
+            st.session_state["clear_new_strategy_input"] = False
+
         st.subheader("💡 Learning Strategies")
         st.markdown(
             "Select strategies you'd like to try for this task. "
@@ -87,7 +93,7 @@ class StrategiesStep(BaseStep):
                     st.info("That strategy is already in your list.")
                 else:
                     custom_strats.append(cleaned)
-                    # Update persistent session data: include the new strategy as selected
+                    # Include the new strategy as selected
                     updated_selected = selected_now + [cleaned]
                     update_current_session(
                         {
@@ -98,9 +104,11 @@ class StrategiesStep(BaseStep):
                         }
                     )
                     st.success("Custom strategy added and selected ✅")
-                    # Clear input for the next entry
-                    st.session_state["new_strategy_text"] = ""
-                    # Keep local variables in sync for the rest of this run
+
+                    # Mark for clearing on the next rerun
+                    st.session_state["clear_new_strategy_input"] = True
+
+                    # Keep local variables in sync for this render
                     selected_now = updated_selected
                     all_options.append(cleaned)
 
@@ -140,4 +148,5 @@ class StrategiesStep(BaseStep):
         if st.session_state.get("ai_responses", {}).get(self.id):
             st.markdown("###### AI suggestion")
             st.markdown(st.session_state["ai_responses"][self.id])
+
 
