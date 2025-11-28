@@ -25,6 +25,15 @@ def init_state() -> None:
     It sets up session storage, active step tracking, AI response cache,
     and timer metadata. If no sessions exist, a demo session is created.
     """
+    if "response" not in st.session_state:
+    st.session_state.response = None
+
+if st.button("Ask AI"):
+    st.session_state.response = model.generate_content(prompt)
+
+if st.session_state.response:
+    st.write(st.session_state.response.text)
+
     if "sessions" not in st.session_state:
         st.session_state["sessions"] = {}
 
