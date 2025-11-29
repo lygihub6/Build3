@@ -272,7 +272,7 @@ def call_gemini_for_module(
         # CRITICAL FIX: Use "gemini-2.0-flash-exp" directly without "models/" prefix
         # The google-genai library handles the model path internally
         response = CLIENT.models.generate_content(
-            model="gemini-1.5-flash",  # Correct format for google-genai library
+            model="gemini-2.0-flash-001",  # Correct format for google-genai library
             contents=prompt,
             config=BASE_GENERATION_CONFIG,
         )
