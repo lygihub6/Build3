@@ -13,19 +13,8 @@ from __future__ import annotations
 import streamlit as st
 from typing import Any, Dict
 
-# Add this import at the top
-from services.ai import safe_ai
-
-# Add this code before the "Get feedback" button
-if st.button("🔄 Clear AI cache", key="clear_cache_button"):
-    if "ai_cache" in st.session_state:
-        st.session_state["ai_cache"] = {}
-    if "ai_last_call_ts" in st.session_state:
-        st.session_state["ai_last_call_ts"] = 0.0
-    st.success("Cache cleared! Try your request again.")
-    st.rerun()
-
 from .base import BaseStep
+from services.ai import safe_ai
 
 class FeedbackStep(BaseStep):
     """Feedback SRL step."""
