@@ -51,6 +51,29 @@ CLIENT = genai.Client(api_key=API_KEY) if API_KEY else None
 # The long system instructions that set the personality and rules of the model
 SYSTEM_INSTRUCTIONS = load_developer_prompt()
 
+
+# -------------------------------------------------
+# Cache management functions
+# -------------------------------------------------
+def clear_ai_cache() -> None:
+    """Clear the AI response cache.
+    
+    Useful when switching API keys or recovering from cached error messages.
+    This function can be called from the UI to reset the cache state.
+    """
+    if "ai_cache" in st.session_state:
+        st.session_state["ai_cache"] = {}
+    if "ai_last_call_ts" in st.session_state:
+        st.session_state["ai_last_call_ts"] = 0.0
+
+
+def get_cache_size() -> int:
+    """Return the number of cached AI responses."""
+    if "ai_cache" in st.session_state:
+        return len(st.session_state["ai_cache"])
+    return 0
+
+
 # -------------------------------------------------
 # Safe wrapper around the Gemini API with caching and rate limiting
 # -------------------------------------------------
@@ -257,7 +280,9 @@ def call_gemini_for_module(
                 "Upgrade to a paid tier for higher limits:\n"
                 "https://ai.google.dev/pricing\n\n"
                 "**Option 4: Use a different model**\n"
-                "Consider switching to a model with higher free tier limits."
+                "Consider switching to a model with higher free tier limits.\n\n"
+                "**Note:** If you just changed your API key, try clicking the '🔄 Clear cache' "
+                "button or refreshing the page to clear old cached errors."
             )
         
         # Handle rate limit errors
