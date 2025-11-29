@@ -232,11 +232,11 @@ def call_gemini_for_module(
     )
     
     try:
-      response = CLIENT.models.generate_content(
-    model="gemini-2.5-flash-lite",
-    contents=prompt,
-    config=BASE_GENERATION_CONFIG,
-)
+         response = CLIENT.models.generate_content(
+            model="gemini-2.0-flash-exp",
+            contents=prompt,
+            config=BASE_GENERATION_CONFIG,
+        )
         return response.text or "(No response from model.)"
     
     except Exception as e:
