@@ -11,11 +11,47 @@ database) without changing the UI code.
 
 from __future__ import annotations
 
-import time
+
 import uuid
 from typing import Dict, Any
 
 import streamlit as st
+import google.generativeai as genai
+import time
+
+@st.cache_resource
+def get_model():
+    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
+    return genai.GenerativeModel("gemini-2.5-flash-lite")
+
+def safe_ai(step_id: str, prompt: str) -> str:
+    """
+    Safely call Gemini with caching and cooldown.
+    Avoids RPM flooding.
+    """
+    if "ai_cache" not in st.session_state:
+        st.session_state.ai_cache = {}
+    if "ai_last_call" not in st.session_state:
+        st.session_state.ai_last_call = 0.0
+
+    key = f"{step_id}:{prompt.strip()}"
+    cache = st.session_state.ai_cache
+
+    # 1. Cached response exists → return immediately
+    if key in cache:
+        return cache[key]
+
+    # 2. Simple rate-limit (max 10 calls/minute)
+    now = time.time()
+    if now - st.session_state.ai_last_call < 6:
+        return "AI cooling down to avoid API rate limits. Try again in a few seconds."
+
+    model = get_model()
+    response = model.generate_content(prompt).text
+    cache[key] = response
+    st.session_state.ai_last_call = now
+    return response
+
 
 
 def init_state() -> None:
