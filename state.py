@@ -16,13 +16,9 @@ import uuid
 from typing import Dict, Any
 
 import streamlit as st
-import google.generativeai as genai
+
 import time
 
-@st.cache_resource
-def get_model():
-    genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
-    return genai.GenerativeModel("gemini-2.5-flash-lite")
 
 def safe_ai(step_id: str, prompt: str) -> str:
     """
